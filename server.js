@@ -11,20 +11,23 @@ app.use(express.json({ limit: '10mb' }));
 app.use(express.static(__dirname));
 
 // ─── Storage Backend ──────────────────────────────────────────────────────────
-// Jika UPSTASH_REDIS_REST_URL di-set (Vercel / env), pakai Upstash Redis.
-// Jika tidak (lokal), pakai JSON file di folder data/.
+// Vercel Upstash integration menyediakan: KV_REST_API_URL + KV_REST_API_TOKEN
+// Fallback: UPSTASH_REDIS_REST_URL + UPSTASH_REDIS_REST_TOKEN (manual)
+// Jika tidak ada keduanya (lokal), pakai JSON file di folder data/.
 
-const USE_REDIS = !!process.env.UPSTASH_REDIS_REST_URL;
-const DATA_DIR  = path.join(__dirname, 'data');
-const KV_PFX    = 'dishub:';
+const REDIS_URL   = process.env.KV_REST_API_URL   || process.env.UPSTASH_REDIS_REST_URL;
+const REDIS_TOKEN = process.env.KV_REST_API_TOKEN  || process.env.UPSTASH_REDIS_REST_TOKEN;
+const USE_REDIS   = !!REDIS_URL;
+const DATA_DIR    = path.join(__dirname, 'data');
+const KV_PFX      = 'dishub:';
 
 let redis = null;
 
 if (USE_REDIS) {
   const { Redis } = require('@upstash/redis');
   redis = new Redis({
-    url:   process.env.UPSTASH_REDIS_REST_URL,
-    token: process.env.UPSTASH_REDIS_REST_TOKEN,
+    url:   REDIS_URL,
+    token: REDIS_TOKEN,
   });
   console.log('📦 Storage: Upstash Redis');
 } else {
