@@ -1,0 +1,9 @@
+[
+  {
+    "id": "USR001",
+    "nama": "Admin Dishub",
+    "email": "admin@dishub.go.id",
+    "role": "Administrator",
+    "aktif": true
+  }
+]

@@ -1,0 +1,29 @@
+[
+  {
+    "id": "RK001",
+    "judul": "Penutupan Jl. Merdeka Barat",
+    "tipe": "urgent",
+    "deskripsi": "Penutupan sementara untuk pekerjaan perbaikan jembatan. Kendaraan dialihkan via Jl. Diponegoro dan Jl. Imam Bonjol.",
+    "mulai": "2026-03-05",
+    "selesai": "2026-03-25",
+    "jam": "06:00–22:00 WIB"
+  },
+  {
+    "id": "RK002",
+    "judul": "Penyesuaian Sinyal Simpang Pemuda",
+    "tipe": "info",
+    "deskripsi": "Optimalisasi siklus lampu lalu lintas simpang Jl. Pemuda – Jl. Cokroaminoto. Diharapkan dapat mengurangi antrian hingga 40%.",
+    "mulai": "2026-03-01",
+    "selesai": "",
+    "jam": "Permanen"
+  },
+  {
+    "id": "RK003",
+    "judul": "Penambahan Zebra Cross Jl. Sudirman",
+    "tipe": "normal",
+    "deskripsi": "Pemasangan zebra cross baru di 3 titik sepanjang Jl. Sudirman dalam rangka peningkatan keselamatan pejalan kaki.",
+    "mulai": "2026-02-28",
+    "selesai": "",
+    "jam": "Berlaku permanen"
+  }
+]

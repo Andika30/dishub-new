@@ -1,0 +1,83 @@
+[
+  {
+    "id": "FL001",
+    "nama": "Formulir Permohonan Izin Angkutan Orang",
+    "kategori": "Angkutan Orang",
+    "tipe": "PDF",
+    "ukuran": "245 KB",
+    "icon": "📄",
+    "url": ""
+  },
+  {
+    "id": "FL002",
+    "nama": "Surat Pernyataan Kesanggupan",
+    "kategori": "Angkutan Orang",
+    "tipe": "DOCX",
+    "ukuran": "78 KB",
+    "icon": "📋",
+    "url": ""
+  },
+  {
+    "id": "FL003",
+    "nama": "Checklist Persyaratan Angkutan Orang",
+    "kategori": "Angkutan Orang",
+    "tipe": "PDF",
+    "ukuran": "120 KB",
+    "icon": "✅",
+    "url": ""
+  },
+  {
+    "id": "FL004",
+    "nama": "Panduan Perizinan Lengkap",
+    "kategori": "Angkutan Orang",
+    "tipe": "PDF",
+    "ukuran": "1.2 MB",
+    "icon": "📘",
+    "url": ""
+  },
+  {
+    "id": "FL005",
+    "nama": "Formulir Izin Angkutan Barang",
+    "kategori": "Angkutan Barang",
+    "tipe": "PDF",
+    "ukuran": "210 KB",
+    "icon": "📄",
+    "url": ""
+  },
+  {
+    "id": "FL006",
+    "nama": "Checklist Persyaratan Angkutan Barang",
+    "kategori": "Angkutan Barang",
+    "tipe": "PDF",
+    "ukuran": "95 KB",
+    "icon": "✅",
+    "url": ""
+  },
+  {
+    "id": "FL007",
+    "nama": "Formulir Permohonan Izin Parkir",
+    "kategori": "Parkir",
+    "tipe": "PDF",
+    "ukuran": "180 KB",
+    "icon": "📄",
+    "url": ""
+  },
+  {
+    "id": "FL008",
+    "nama": "Template Dokumen Andalalin",
+    "kategori": "Andalalin",
+    "tipe": "DOCX",
+    "ukuran": "450 KB",
+    "icon": "📄",
+    "url": ""
+  },
+  {
+    "id": "FL009",
+    "nama": "Formulir Izin Penggunaan Jalan",
+    "kategori": "Izin Jalan",
+    "tipe": "PDF",
+    "ukuran": "165 KB",
+    "icon": "📄",
+    "url": ""
+  }
+]

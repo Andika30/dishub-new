@@ -1,0 +1,1559 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Dinas Perhubungan — Bidang Lalu Lintas Jalan</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=DM+Sans:wght@300;400;500;600&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --navy: #0a1628;
+    --navy-mid: #112240;
+    --navy-light: #1a3a5c;
+    --gold: #c9a227;
+    --gold-light: #e8c460;
+    --gold-pale: #f5e8b8;
+    --teal: #00b4d8;
+    --teal-dark: #0077b6;
+    --white: #f8f9fa;
+    --gray: #94a3b8;
+    --gray-light: #e2e8f0;
+    --red: #e63946;
+    --green: #2a9d8f;
+    --transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  body {
+    font-family: 'DM Sans', sans-serif;
+    background: var(--navy);
+    color: var(--white);
+    overflow-x: hidden;
+  }
+
+  /* SCROLLBAR */
+  ::-webkit-scrollbar { width: 4px; }
+  ::-webkit-scrollbar-track { background: var(--navy); }
+  ::-webkit-scrollbar-thumb { background: var(--gold); border-radius: 2px; }
+
+  /* NAV */
+  nav {
+    position: fixed; top: 0; width: 100%; z-index: 1000;
+    padding: 0 2rem;
+    background: rgba(10,22,40,0.92);
+    backdrop-filter: blur(20px);
+    border-bottom: 1px solid rgba(201,162,39,0.15);
+    display: flex; align-items: center; justify-content: space-between;
+    height: 70px;
+    transition: var(--transition);
+  }
+  .nav-logo { display: flex; align-items: center; gap: 14px; }
+  .nav-logo-icon {
+    width: 46px; height: 46px;
+    background: linear-gradient(135deg, var(--gold), var(--gold-light));
+    border-radius: 10px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 1.4rem; font-weight: 700; color: var(--navy);
+    font-family: 'Playfair Display', serif;
+    box-shadow: 0 4px 16px rgba(201,162,39,0.3);
+  }
+  .nav-logo-text { line-height: 1.2; }
+  .nav-logo-text strong { display: block; font-size: 0.9rem; font-weight: 600; color: var(--gold); }
+  .nav-logo-text span { font-size: 0.72rem; color: var(--gray); }
+  .nav-links { display: flex; gap: 0.2rem; list-style: none; }
+  .nav-links a {
+    color: var(--gray); text-decoration: none;
+    font-size: 0.82rem; font-weight: 500; letter-spacing: 0.03em;
+    padding: 0.4rem 0.8rem; border-radius: 6px;
+    transition: var(--transition); white-space: nowrap;
+  }
+  .nav-links a:hover { color: var(--gold); background: rgba(201,162,39,0.08); }
+  .nav-cta {
+    background: linear-gradient(135deg, var(--gold), var(--gold-light));
+    color: var(--navy); border: none; padding: 0.55rem 1.2rem;
+    border-radius: 8px; font-weight: 600; font-size: 0.82rem;
+    cursor: pointer; transition: var(--transition); white-space: nowrap;
+  }
+  .nav-cta:hover { transform: translateY(-2px); box-shadow: 0 6px 20px rgba(201,162,39,0.4); }
+  .nav-admin {
+    background: transparent;
+    border: 1px solid rgba(255,255,255,0.15);
+    color: var(--gray); padding: 0.5rem 1rem;
+    border-radius: 8px; font-weight: 500; font-size: 0.78rem;
+    cursor: pointer; transition: var(--transition); white-space: nowrap;
+    text-decoration: none; display: inline-flex; align-items: center; gap: 0.35rem;
+  }
+  .nav-admin:hover { border-color: var(--gold); color: var(--gold); background: rgba(201,162,39,0.06); }
+  .hamburger { display: none; flex-direction: column; gap: 5px; cursor: pointer; }
+  .hamburger span { width: 24px; height: 2px; background: var(--gold); border-radius: 2px; transition: var(--transition); }
+
+  /* HERO */
+  #beranda {
+    min-height: 100vh; position: relative;
+    display: flex; align-items: center;
+    overflow: hidden;
+    padding: 90px 2rem 2rem;
+  }
+  .hero-bg {
+    position: absolute; inset: 0;
+    background: radial-gradient(ellipse at 20% 50%, rgba(0,119,182,0.18) 0%, transparent 60%),
+                radial-gradient(ellipse at 80% 20%, rgba(201,162,39,0.12) 0%, transparent 50%),
+                radial-gradient(ellipse at 50% 100%, rgba(0,180,216,0.08) 0%, transparent 50%);
+  }
+  .hero-grid {
+    position: absolute; inset: 0; opacity: 0.04;
+    background-image: linear-gradient(var(--teal) 1px, transparent 1px),
+                      linear-gradient(90deg, var(--teal) 1px, transparent 1px);
+    background-size: 60px 60px;
+  }
+  .hero-particles { position: absolute; inset: 0; pointer-events: none; }
+  .particle {
+    position: absolute; border-radius: 50%;
+    background: var(--gold); opacity: 0;
+    animation: float-particle 8s infinite;
+  }
+  @keyframes float-particle {
+    0% { opacity: 0; transform: translateY(0) scale(0); }
+    20% { opacity: 0.6; }
+    80% { opacity: 0.3; }
+    100% { opacity: 0; transform: translateY(-120px) scale(1); }
+  }
+  .hero-content { position: relative; max-width: 1200px; margin: 0 auto; width: 100%; display: grid; grid-template-columns: 1fr 1fr; gap: 4rem; align-items: center; }
+  .hero-badge {
+    display: inline-flex; align-items: center; gap: 8px;
+    background: rgba(201,162,39,0.1); border: 1px solid rgba(201,162,39,0.3);
+    padding: 0.4rem 1rem; border-radius: 100px;
+    font-size: 0.75rem; font-weight: 500; color: var(--gold);
+    margin-bottom: 1.5rem; letter-spacing: 0.05em;
+  }
+  .hero-badge::before { content: '●'; font-size: 0.5rem; animation: pulse-dot 2s infinite; }
+  @keyframes pulse-dot { 0%,100% { opacity: 1; } 50% { opacity: 0.3; } }
+  .hero-title {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(2rem, 4vw, 3.2rem);
+    line-height: 1.15; font-weight: 700;
+    margin-bottom: 1rem;
+  }
+  .hero-title .accent { color: var(--gold); display: block; }
+  .hero-tagline {
+    font-size: 1rem; color: var(--gray); line-height: 1.7;
+    margin-bottom: 2rem; max-width: 480px;
+  }
+  .hero-actions { display: flex; gap: 1rem; flex-wrap: wrap; margin-bottom: 2.5rem; }
+  .btn-primary {
+    background: linear-gradient(135deg, var(--gold), var(--gold-light));
+    color: var(--navy); border: none; padding: 0.85rem 1.8rem;
+    border-radius: 10px; font-weight: 700; font-size: 0.9rem;
+    cursor: pointer; transition: var(--transition);
+    display: flex; align-items: center; gap: 8px;
+    text-decoration: none;
+  }
+  .btn-primary:hover { transform: translateY(-3px); box-shadow: 0 12px 32px rgba(201,162,39,0.4); }
+  .btn-secondary {
+    background: transparent; color: var(--white);
+    border: 1.5px solid rgba(255,255,255,0.2);
+    padding: 0.85rem 1.8rem; border-radius: 10px;
+    font-weight: 500; font-size: 0.9rem; cursor: pointer;
+    transition: var(--transition); text-decoration: none;
+    display: flex; align-items: center; gap: 8px;
+  }
+  .btn-secondary:hover { border-color: var(--gold); color: var(--gold); transform: translateY(-3px); }
+  .hero-stats { display: flex; gap: 2rem; }
+  .stat { border-left: 2px solid var(--gold); padding-left: 1rem; }
+  .stat-num { font-family: 'DM Mono', monospace; font-size: 1.6rem; font-weight: 500; color: var(--gold); }
+  .stat-label { font-size: 0.75rem; color: var(--gray); }
+
+  /* HERO VISUAL */
+  .hero-visual { position: relative; display: flex; justify-content: center; }
+  .hero-card-stack { position: relative; width: 340px; height: 400px; }
+  .info-card {
+    position: absolute; border-radius: 16px;
+    padding: 1.2rem 1.4rem;
+    backdrop-filter: blur(20px);
+    border: 1px solid rgba(255,255,255,0.1);
+    transition: var(--transition);
+  }
+  .info-card:hover { transform: translateY(-5px) !important; }
+  .card-main {
+    background: linear-gradient(135deg, rgba(17,34,64,0.95), rgba(26,58,92,0.9));
+    width: 300px; top: 0; left: 0;
+    box-shadow: 0 20px 60px rgba(0,0,0,0.4);
+    animation: float-card 6s ease-in-out infinite;
+  }
+  .card-secondary {
+    background: rgba(201,162,39,0.12);
+    border-color: rgba(201,162,39,0.3);
+    width: 220px; bottom: 20px; right: -20px;
+    animation: float-card 6s ease-in-out infinite reverse;
+  }
+  .card-tertiary {
+    background: rgba(0,119,182,0.15);
+    border-color: rgba(0,180,216,0.3);
+    width: 180px; top: 160px; right: 10px;
+    animation: float-card 5s ease-in-out infinite 2s;
+  }
+  @keyframes float-card {
+    0%,100% { transform: translateY(0); }
+    50% { transform: translateY(-12px); }
+  }
+  .card-header { display: flex; align-items: center; gap: 10px; margin-bottom: 0.8rem; }
+  .card-icon { width: 36px; height: 36px; border-radius: 8px; display: flex; align-items: center; justify-content: center; font-size: 1.1rem; }
+  .icon-gold { background: rgba(201,162,39,0.2); }
+  .icon-teal { background: rgba(0,180,216,0.2); }
+  .card-title-text { font-size: 0.85rem; font-weight: 600; color: var(--white); }
+  .card-sub { font-size: 0.7rem; color: var(--gray); }
+  .card-item { display: flex; align-items: center; gap: 8px; padding: 0.5rem 0; border-top: 1px solid rgba(255,255,255,0.07); }
+  .card-item-dot { width: 6px; height: 6px; border-radius: 50%; flex-shrink: 0; }
+  .dot-gold { background: var(--gold); }
+  .dot-teal { background: var(--teal); }
+  .dot-green { background: var(--green); }
+  .card-item-text { font-size: 0.75rem; color: var(--gray); }
+  .status-badge { display: flex; align-items: center; gap: 6px; font-size: 0.72rem; }
+  .status-dot { width: 7px; height: 7px; border-radius: 50%; background: var(--green); animation: pulse-status 2s infinite; }
+  @keyframes pulse-status { 0%,100% { box-shadow: 0 0 0 0 rgba(42,157,143,0.4); } 70% { box-shadow: 0 0 0 6px transparent; } }
+
+  /* SECTION STYLES */
+  section { padding: 5rem 2rem; }
+  .container { max-width: 1200px; margin: 0 auto; }
+  .section-label {
+    font-family: 'DM Mono', monospace; font-size: 0.72rem;
+    color: var(--gold); letter-spacing: 0.15em; text-transform: uppercase;
+    margin-bottom: 0.8rem; display: flex; align-items: center; gap: 10px;
+  }
+  .section-label::before { content: ''; width: 30px; height: 1px; background: var(--gold); }
+  .section-title {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(1.8rem, 3vw, 2.6rem);
+    font-weight: 700; line-height: 1.2;
+    margin-bottom: 1rem;
+  }
+  .section-title .gold { color: var(--gold); }
+  .section-desc { color: var(--gray); line-height: 1.7; max-width: 580px; font-size: 0.95rem; }
+  .divider { width: 60px; height: 3px; background: linear-gradient(90deg, var(--gold), transparent); margin: 1.5rem 0; border-radius: 2px; }
+
+  /* INFO STRIP */
+  .info-strip {
+    background: linear-gradient(135deg, var(--navy-mid), var(--navy-light));
+    border-top: 1px solid rgba(201,162,39,0.2);
+    border-bottom: 1px solid rgba(201,162,39,0.2);
+    padding: 1.5rem 2rem;
+  }
+  .info-strip-inner { max-width: 1200px; margin: 0 auto; display: flex; gap: 2rem; flex-wrap: wrap; justify-content: space-between; }
+  .info-item { display: flex; align-items: center; gap: 12px; }
+  .info-icon { font-size: 1.3rem; opacity: 0.8; }
+  .info-text strong { display: block; font-size: 0.82rem; color: var(--white); font-weight: 600; }
+  .info-text span { font-size: 0.75rem; color: var(--gray); }
+  .contact-btn {
+    background: linear-gradient(135deg, var(--teal-dark), var(--teal));
+    color: white; border: none; padding: 0.7rem 1.5rem;
+    border-radius: 8px; font-weight: 600; font-size: 0.82rem;
+    cursor: pointer; transition: var(--transition); white-space: nowrap;
+    display: flex; align-items: center; gap: 8px; text-decoration: none;
+  }
+  .contact-btn:hover { transform: translateY(-2px); box-shadow: 0 8px 24px rgba(0,119,182,0.4); }
+
+  /* PROFILE SECTION */
+  #profil { background: var(--navy); }
+  .profile-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 4rem; align-items: start; }
+  .visi-misi-grid { display: grid; gap: 1.5rem; }
+  .vm-card {
+    background: linear-gradient(135deg, rgba(17,34,64,0.8), rgba(26,58,92,0.5));
+    border: 1px solid rgba(201,162,39,0.15);
+    border-radius: 16px; padding: 1.8rem;
+    transition: var(--transition);
+    position: relative; overflow: hidden;
+  }
+  .vm-card::before {
+    content: ''; position: absolute; top: 0; left: 0;
+    width: 4px; height: 100%; background: linear-gradient(180deg, var(--gold), var(--gold-light));
+  }
+  .vm-card:hover { border-color: rgba(201,162,39,0.4); transform: translateX(6px); }
+  .vm-label { font-family: 'DM Mono', monospace; font-size: 0.7rem; color: var(--gold); letter-spacing: 0.1em; margin-bottom: 0.6rem; }
+  .vm-text { font-size: 0.9rem; line-height: 1.7; color: var(--gray); }
+  .misi-list { list-style: none; display: grid; gap: 0.6rem; margin-top: 0.8rem; }
+  .misi-list li { display: flex; gap: 10px; font-size: 0.85rem; color: var(--gray); line-height: 1.6; }
+  .misi-list li::before { content: '▸'; color: var(--gold); flex-shrink: 0; margin-top: 1px; }
+
+  /* PIMPINAN */
+  .pimpinan-card {
+    background: linear-gradient(135deg, rgba(17,34,64,0.9), rgba(26,58,92,0.7));
+    border: 1px solid rgba(201,162,39,0.2);
+    border-radius: 20px; padding: 2rem; text-align: center;
+    position: relative; overflow: hidden;
+    transition: var(--transition);
+  }
+  .pimpinan-card:hover { transform: translateY(-6px); box-shadow: 0 20px 60px rgba(0,0,0,0.3); }
+  .pimpinan-avatar {
+    width: 100px; height: 100px; border-radius: 50%;
+    background: linear-gradient(135deg, var(--navy-light), var(--navy-mid));
+    border: 3px solid var(--gold);
+    margin: 0 auto 1rem;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 2.5rem;
+    box-shadow: 0 0 30px rgba(201,162,39,0.2);
+  }
+  .pimpinan-name { font-family: 'Playfair Display', serif; font-size: 1.2rem; font-weight: 700; margin-bottom: 0.3rem; }
+  .pimpinan-title { font-size: 0.78rem; color: var(--gold); font-weight: 500; letter-spacing: 0.05em; margin-bottom: 0.8rem; }
+  .pimpinan-bio { font-size: 0.82rem; color: var(--gray); line-height: 1.6; }
+  .staff-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1rem; margin-top: 1.5rem; }
+  .staff-card {
+    background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.08);
+    border-radius: 12px; padding: 1rem; text-align: center;
+    transition: var(--transition);
+  }
+  .staff-card:hover { background: rgba(201,162,39,0.08); border-color: rgba(201,162,39,0.25); }
+  .staff-avatar { font-size: 1.8rem; margin-bottom: 0.5rem; }
+  .staff-name { font-size: 0.78rem; font-weight: 600; margin-bottom: 0.2rem; }
+  .staff-pos { font-size: 0.68rem; color: var(--gold); }
+
+  /* LAYANAN */
+  #layanan { background: linear-gradient(180deg, var(--navy) 0%, var(--navy-mid) 100%); }
+  .layanan-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 1.5rem; margin-top: 3rem; }
+  .layanan-card {
+    background: linear-gradient(135deg, rgba(17,34,64,0.9), rgba(26,58,92,0.6));
+    border: 1px solid rgba(255,255,255,0.08);
+    border-radius: 18px; padding: 2rem;
+    transition: var(--transition); cursor: pointer;
+    position: relative; overflow: hidden;
+  }
+  .layanan-card::after {
+    content: ''; position: absolute; bottom: 0; left: 0; right: 0;
+    height: 3px; background: linear-gradient(90deg, var(--gold), var(--teal));
+    transform: scaleX(0); transition: var(--transition); transform-origin: left;
+  }
+  .layanan-card:hover { transform: translateY(-8px); border-color: rgba(201,162,39,0.3); box-shadow: 0 20px 50px rgba(0,0,0,0.3); }
+  .layanan-card:hover::after { transform: scaleX(1); }
+  .layanan-icon { width: 54px; height: 54px; border-radius: 14px; display: flex; align-items: center; justify-content: center; font-size: 1.5rem; margin-bottom: 1.2rem; }
+  .layanan-card:nth-child(1) .layanan-icon { background: rgba(201,162,39,0.15); }
+  .layanan-card:nth-child(2) .layanan-icon { background: rgba(0,180,216,0.15); }
+  .layanan-card:nth-child(3) .layanan-icon { background: rgba(42,157,143,0.15); }
+  .layanan-card:nth-child(4) .layanan-icon { background: rgba(230,57,70,0.15); }
+  .layanan-card:nth-child(5) .layanan-icon { background: rgba(119,0,182,0.15); }
+  .layanan-card:nth-child(6) .layanan-icon { background: rgba(0,119,182,0.15); }
+  .layanan-title { font-size: 1rem; font-weight: 700; margin-bottom: 0.6rem; }
+  .layanan-desc { font-size: 0.82rem; color: var(--gray); line-height: 1.6; margin-bottom: 1.2rem; }
+  .layanan-link { font-size: 0.78rem; color: var(--gold); font-weight: 600; display: flex; align-items: center; gap: 6px; transition: var(--transition); }
+  .layanan-link:hover { gap: 10px; }
+
+  /* ALUR LAYANAN */
+  #alur { background: var(--navy); }
+  .alur-steps { display: grid; grid-template-columns: repeat(5, 1fr); gap: 0; margin-top: 3rem; position: relative; }
+  .alur-step { position: relative; text-align: center; padding: 0 1rem; }
+  .alur-step::after {
+    content: '→'; position: absolute; right: -10px; top: 28px;
+    color: var(--gold); font-size: 1.2rem; z-index: 2;
+  }
+  .alur-step:last-child::after { display: none; }
+  .step-num {
+    width: 56px; height: 56px; border-radius: 50%;
+    background: linear-gradient(135deg, var(--gold), var(--gold-light));
+    color: var(--navy); font-weight: 700; font-size: 1.1rem;
+    display: flex; align-items: center; justify-content: center;
+    margin: 0 auto 1rem; position: relative; z-index: 1;
+    box-shadow: 0 6px 20px rgba(201,162,39,0.3);
+    transition: var(--transition);
+  }
+  .alur-step:hover .step-num { transform: scale(1.15); box-shadow: 0 10px 30px rgba(201,162,39,0.5); }
+  .step-title { font-size: 0.85rem; font-weight: 600; margin-bottom: 0.5rem; }
+  .step-desc { font-size: 0.75rem; color: var(--gray); line-height: 1.5; }
+  .step-icon { font-size: 1.4rem; margin-bottom: 0.6rem; }
+
+  /* PERSYARATAN */
+  #persyaratan { background: var(--navy-mid); }
+  .syarat-tabs { display: flex; gap: 0.5rem; margin-bottom: 2rem; flex-wrap: wrap; }
+  .tab-btn {
+    padding: 0.55rem 1.2rem; border-radius: 8px;
+    border: 1px solid rgba(255,255,255,0.1);
+    background: transparent; color: var(--gray);
+    font-size: 0.82rem; font-weight: 500; cursor: pointer;
+    transition: var(--transition);
+  }
+  .tab-btn.active { background: var(--gold); color: var(--navy); border-color: var(--gold); font-weight: 700; }
+  .tab-btn:hover:not(.active) { border-color: var(--gold); color: var(--gold); }
+  .tab-content { display: none; }
+  .tab-content.active { display: grid; grid-template-columns: 1fr 1fr; gap: 2rem; }
+  .syarat-list { display: grid; gap: 0.7rem; }
+  .syarat-item {
+    display: flex; align-items: flex-start; gap: 12px;
+    background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.07);
+    border-radius: 10px; padding: 0.9rem 1rem;
+    transition: var(--transition);
+  }
+  .syarat-item:hover { background: rgba(201,162,39,0.06); border-color: rgba(201,162,39,0.2); }
+  .syarat-check { color: var(--green); font-size: 1rem; flex-shrink: 0; margin-top: 1px; }
+  .syarat-text { font-size: 0.83rem; color: var(--gray); line-height: 1.5; }
+  .download-box {
+    background: linear-gradient(135deg, rgba(0,119,182,0.15), rgba(0,180,216,0.08));
+    border: 1px solid rgba(0,180,216,0.25); border-radius: 16px; padding: 2rem;
+  }
+  .download-title { font-size: 1rem; font-weight: 700; margin-bottom: 1.2rem; color: var(--teal); }
+  .download-list { display: grid; gap: 0.8rem; }
+  .download-item {
+    display: flex; align-items: center; justify-content: space-between;
+    background: rgba(255,255,255,0.04); border-radius: 10px; padding: 0.9rem 1rem;
+    transition: var(--transition); cursor: pointer;
+  }
+  .download-item:hover { background: rgba(0,180,216,0.1); }
+  .download-item-left { display: flex; align-items: center; gap: 10px; }
+  .file-icon { font-size: 1.1rem; }
+  .file-name { font-size: 0.82rem; font-weight: 500; }
+  .file-size { font-size: 0.7rem; color: var(--gray); }
+  .dl-btn { background: rgba(0,180,216,0.2); border: 1px solid rgba(0,180,216,0.3); color: var(--teal); padding: 0.3rem 0.7rem; border-radius: 6px; font-size: 0.72rem; font-weight: 600; cursor: pointer; transition: var(--transition); }
+  .dl-btn:hover { background: var(--teal); color: white; }
+
+  /* INFORMASI */
+  #informasi { background: var(--navy); }
+  .info-grid { display: grid; grid-template-columns: 2fr 1fr; gap: 2rem; margin-top: 3rem; }
+  .rekayasa-grid { display: grid; gap: 1rem; }
+  .rekayasa-card {
+    background: rgba(17,34,64,0.8); border: 1px solid rgba(255,255,255,0.08);
+    border-radius: 14px; padding: 1.4rem;
+    transition: var(--transition);
+    border-left: 3px solid transparent;
+  }
+  .rekayasa-card:hover { transform: translateX(6px); border-left-color: var(--gold); }
+  .rekayasa-card.urgent { border-left-color: var(--red); }
+  .rekayasa-card.info { border-left-color: var(--teal); }
+  .rekayasa-card.normal { border-left-color: var(--green); }
+  .rekayasa-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 0.6rem; }
+  .rekayasa-title { font-size: 0.9rem; font-weight: 600; }
+  .rekayasa-tag { font-size: 0.65rem; font-weight: 600; padding: 0.2rem 0.6rem; border-radius: 100px; }
+  .tag-urgent { background: rgba(230,57,70,0.2); color: var(--red); }
+  .tag-info { background: rgba(0,180,216,0.2); color: var(--teal); }
+  .tag-normal { background: rgba(42,157,143,0.2); color: var(--green); }
+  .rekayasa-desc { font-size: 0.78rem; color: var(--gray); line-height: 1.6; }
+  .rekayasa-meta { font-size: 0.68rem; color: var(--gray); margin-top: 0.6rem; opacity: 0.7; }
+  .pengumuman-list { display: grid; gap: 0.9rem; }
+  .pengumuman-item {
+    background: rgba(17,34,64,0.8); border: 1px solid rgba(255,255,255,0.07);
+    border-radius: 12px; padding: 1.2rem; cursor: pointer;
+    transition: var(--transition);
+  }
+  .pengumuman-item:hover { border-color: rgba(201,162,39,0.3); background: rgba(201,162,39,0.05); }
+  .pengumuman-date { font-family: 'DM Mono', monospace; font-size: 0.68rem; color: var(--gold); margin-bottom: 0.4rem; }
+  .pengumuman-title { font-size: 0.83rem; font-weight: 600; line-height: 1.4; }
+
+  /* PENGADUAN */
+  #pengaduan { background: var(--navy-mid); }
+  .pengaduan-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 3rem; align-items: start; margin-top: 3rem; }
+  .form-card {
+    background: rgba(10,22,40,0.8); border: 1px solid rgba(201,162,39,0.2);
+    border-radius: 20px; padding: 2rem;
+  }
+  .form-title { font-size: 1.1rem; font-weight: 700; margin-bottom: 1.5rem; display: flex; align-items: center; gap: 10px; }
+  .form-group { margin-bottom: 1.2rem; }
+  .form-label { font-size: 0.78rem; font-weight: 600; color: var(--gray); margin-bottom: 0.5rem; display: block; letter-spacing: 0.03em; }
+  .form-input, .form-select, .form-textarea {
+    width: 100%; background: rgba(255,255,255,0.05);
+    border: 1px solid rgba(255,255,255,0.1); border-radius: 10px;
+    padding: 0.75rem 1rem; color: var(--white);
+    font-family: 'DM Sans', sans-serif; font-size: 0.85rem;
+    transition: var(--transition); outline: none;
+  }
+  .form-input:focus, .form-select:focus, .form-textarea:focus {
+    border-color: var(--gold); background: rgba(201,162,39,0.05);
+    box-shadow: 0 0 0 3px rgba(201,162,39,0.1);
+  }
+  .form-select option { background: var(--navy); }
+  .form-textarea { resize: vertical; min-height: 100px; }
+  .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
+  .submit-btn {
+    width: 100%; background: linear-gradient(135deg, var(--gold), var(--gold-light));
+    color: var(--navy); border: none; padding: 1rem;
+    border-radius: 10px; font-weight: 700; font-size: 0.9rem;
+    cursor: pointer; transition: var(--transition); margin-top: 0.5rem;
+  }
+  .submit-btn:hover { transform: translateY(-2px); box-shadow: 0 10px 30px rgba(201,162,39,0.4); }
+  .kontak-info { display: grid; gap: 1.2rem; }
+  .kontak-card {
+    background: rgba(10,22,40,0.8); border: 1px solid rgba(255,255,255,0.08);
+    border-radius: 14px; padding: 1.4rem;
+    display: flex; align-items: flex-start; gap: 14px;
+    transition: var(--transition);
+  }
+  .kontak-card:hover { border-color: rgba(201,162,39,0.3); }
+  .kontak-icon { width: 44px; height: 44px; border-radius: 10px; display: flex; align-items: center; justify-content: center; font-size: 1.2rem; flex-shrink: 0; }
+  .ki-gold { background: rgba(201,162,39,0.15); }
+  .ki-teal { background: rgba(0,180,216,0.15); }
+  .ki-green { background: rgba(42,157,143,0.15); }
+  .ki-red { background: rgba(230,57,70,0.15); }
+  .kontak-detail strong { display: block; font-size: 0.85rem; font-weight: 600; margin-bottom: 0.3rem; }
+  .kontak-detail span { font-size: 0.8rem; color: var(--gray); }
+  .kontak-detail a { color: var(--teal); text-decoration: none; font-size: 0.8rem; }
+  .kontak-detail a:hover { color: var(--gold); }
+
+  /* FAQ */
+  #faq { background: var(--navy); }
+  .faq-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1.2rem; margin-top: 3rem; }
+  .faq-item {
+    background: rgba(17,34,64,0.8); border: 1px solid rgba(255,255,255,0.08);
+    border-radius: 14px; overflow: hidden; transition: var(--transition);
+    cursor: pointer;
+  }
+  .faq-item:hover { border-color: rgba(201,162,39,0.3); }
+  .faq-item.open { border-color: rgba(201,162,39,0.4); }
+  .faq-question {
+    padding: 1.2rem 1.4rem; display: flex; align-items: center;
+    justify-content: space-between; gap: 1rem;
+    font-size: 0.88rem; font-weight: 600;
+  }
+  .faq-toggle { color: var(--gold); font-size: 1.2rem; transition: var(--transition); flex-shrink: 0; }
+  .faq-item.open .faq-toggle { transform: rotate(45deg); }
+  .faq-answer { display: none; padding: 0 1.4rem 1.2rem; font-size: 0.82rem; color: var(--gray); line-height: 1.7; border-top: 1px solid rgba(255,255,255,0.06); padding-top: 1rem; }
+  .faq-item.open .faq-answer { display: block; }
+
+  /* FOOTER */
+  footer {
+    background: var(--navy-mid);
+    border-top: 1px solid rgba(201,162,39,0.15);
+    padding: 3rem 2rem 1.5rem;
+  }
+  .footer-grid { max-width: 1200px; margin: 0 auto; display: grid; grid-template-columns: 2fr 1fr 1fr 1fr; gap: 3rem; margin-bottom: 2rem; }
+  .footer-brand strong { display: block; font-family: 'Playfair Display', serif; font-size: 1.1rem; color: var(--gold); margin-bottom: 0.3rem; }
+  .footer-brand p { font-size: 0.8rem; color: var(--gray); line-height: 1.6; margin-top: 0.8rem; }
+  .footer-col h4 { font-size: 0.82rem; font-weight: 700; color: var(--white); margin-bottom: 1rem; letter-spacing: 0.05em; }
+  .footer-col ul { list-style: none; display: grid; gap: 0.5rem; }
+  .footer-col ul li a { color: var(--gray); text-decoration: none; font-size: 0.78rem; transition: var(--transition); }
+  .footer-col ul li a:hover { color: var(--gold); }
+  .footer-bottom { max-width: 1200px; margin: 0 auto; padding-top: 1.5rem; border-top: 1px solid rgba(255,255,255,0.08); display: flex; justify-content: space-between; align-items: center; flex-wrap: gap; }
+  .footer-copy { font-size: 0.75rem; color: var(--gray); }
+  .social-links { display: flex; gap: 0.8rem; }
+  .social-link { width: 34px; height: 34px; border-radius: 8px; background: rgba(255,255,255,0.06); border: 1px solid rgba(255,255,255,0.1); display: flex; align-items: center; justify-content: center; font-size: 0.9rem; cursor: pointer; transition: var(--transition); text-decoration: none; color: var(--gray); }
+  .social-link:hover { background: var(--gold); color: var(--navy); border-color: var(--gold); }
+
+  /* FLOATING BTN */
+  .floating-contact {
+    position: fixed; bottom: 2rem; right: 2rem; z-index: 999;
+    display: flex; flex-direction: column; gap: 0.8rem; align-items: flex-end;
+  }
+  .float-btn {
+    width: 52px; height: 52px; border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 1.3rem; cursor: pointer; border: none;
+    transition: var(--transition); box-shadow: 0 6px 20px rgba(0,0,0,0.3);
+    text-decoration: none;
+  }
+  .float-btn:hover { transform: scale(1.1); }
+  .float-wa { background: #25d366; }
+  .float-top { background: linear-gradient(135deg, var(--gold), var(--gold-light)); color: var(--navy); }
+  .float-label {
+    background: var(--navy-mid); color: var(--white); border: 1px solid rgba(255,255,255,0.1);
+    padding: 0.3rem 0.7rem; border-radius: 6px; font-size: 0.72rem;
+    opacity: 0; transition: var(--transition); white-space: nowrap;
+    pointer-events: none;
+  }
+  .float-btn-wrap:hover .float-label { opacity: 1; }
+  .float-btn-wrap { display: flex; align-items: center; gap: 0.6rem; }
+
+  /* TOAST */
+  .toast {
+    position: fixed; bottom: 2rem; left: 50%; transform: translateX(-50%) translateY(100px);
+    background: var(--green); color: white; padding: 1rem 2rem;
+    border-radius: 10px; font-size: 0.85rem; font-weight: 600;
+    z-index: 9999; transition: var(--transition);
+    box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+  }
+  .toast.show { transform: translateX(-50%) translateY(0); }
+
+  /* ANIMATIONS */
+  .fade-in {
+    opacity: 0; transform: translateY(30px);
+    transition: opacity 0.7s ease, transform 0.7s ease;
+  }
+  .fade-in.visible { opacity: 1; transform: translateY(0); }
+
+  /* MOBILE NAV */
+  .mobile-menu {
+    position: fixed; top: 70px; left: 0; right: 0; z-index: 999;
+    background: rgba(10,22,40,0.98); backdrop-filter: blur(20px);
+    border-bottom: 1px solid rgba(201,162,39,0.15);
+    padding: 1rem;
+    display: none; flex-direction: column; gap: 0.3rem;
+    transform: translateY(-20px); opacity: 0; transition: var(--transition);
+  }
+  .mobile-menu.open { display: flex; transform: translateY(0); opacity: 1; }
+  .mobile-menu a { color: var(--gray); text-decoration: none; padding: 0.7rem 1rem; border-radius: 8px; font-size: 0.9rem; transition: var(--transition); }
+  .mobile-menu a:hover { color: var(--gold); background: rgba(201,162,39,0.08); }
+
+  /* RESPONSIVE */
+  @media (max-width: 900px) {
+    .hero-content { grid-template-columns: 1fr; }
+    .hero-visual { display: none; }
+    .profile-grid { grid-template-columns: 1fr; }
+    .tab-content.active { grid-template-columns: 1fr; }
+    .info-grid { grid-template-columns: 1fr; }
+    .pengaduan-grid { grid-template-columns: 1fr; }
+    .faq-grid { grid-template-columns: 1fr; }
+    .footer-grid { grid-template-columns: 1fr 1fr; }
+    .alur-steps { grid-template-columns: repeat(3, 1fr); }
+    .alur-step:nth-child(3)::after { display: none; }
+    .nav-links { display: none; }
+    .hamburger { display: flex; }
+    .staff-grid { grid-template-columns: repeat(2, 1fr); }
+    .form-row { grid-template-columns: 1fr; }
+    .hero-stats { flex-wrap: wrap; }
+  }
+  @media (max-width: 600px) {
+    .alur-steps { grid-template-columns: repeat(2, 1fr); }
+    .footer-grid { grid-template-columns: 1fr; }
+    .info-strip-inner { flex-direction: column; gap: 1rem; }
+  }
+
+  /* BIDANG */
+  .bidang-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.5rem; margin-top: 2rem; }
+  .bidang-card {
+    background: linear-gradient(135deg, rgba(17,34,64,0.9), rgba(26,58,92,0.6));
+    border: 1px solid rgba(255,255,255,0.08); border-radius: 16px; padding: 1.8rem;
+    transition: var(--transition); text-align: center;
+  }
+  .bidang-card:hover { transform: translateY(-6px); border-color: rgba(0,180,216,0.3); }
+  .bidang-icon { font-size: 2.5rem; margin-bottom: 1rem; }
+  .bidang-name { font-size: 0.95rem; font-weight: 700; margin-bottom: 0.5rem; }
+  .bidang-desc { font-size: 0.78rem; color: var(--gray); line-height: 1.6; }
+  @media (max-width: 768px) { .bidang-grid { grid-template-columns: 1fr; } }
+</style>
+</head>
+<body>
+
+<!-- NAVIGATION -->
+<nav id="navbar">
+  <div class="nav-logo">
+    <div class="nav-logo-icon">🚦</div>
+    <div class="nav-logo-text">
+      <strong>DISHUB</strong>
+      <span>Bidang Lalu Lintas Jalan</span>
+    </div>
+  </div>
+  <ul class="nav-links">
+    <li><a href="#beranda">Beranda</a></li>
+    <li><a href="#profil">Profil</a></li>
+    <li><a href="#layanan">Layanan</a></li>
+    <li><a href="#alur">Alur</a></li>
+    <li><a href="#persyaratan">Persyaratan</a></li>
+    <li><a href="#informasi">Informasi</a></li>
+    <li><a href="#pengaduan">Pengaduan</a></li>
+    <li><a href="#faq">FAQ</a></li>
+  </ul>
+  <a href="login.html" class="nav-admin">🔐 Admin</a>
+  <button class="nav-cta" onclick="scrollToSection('pengaduan')">📞 Hubungi Kami</button>
+  <div class="hamburger" onclick="toggleMenu()" id="hamburger">
+    <span></span><span></span><span></span>
+  </div>
+</nav>
+
+<!-- MOBILE MENU -->
+<div class="mobile-menu" id="mobileMenu">
+  <a href="#beranda" onclick="closeMobileMenu()">🏠 Beranda</a>
+  <a href="#profil" onclick="closeMobileMenu()">🏛️ Profil</a>
+  <a href="#layanan" onclick="closeMobileMenu()">⚙️ Layanan</a>
+  <a href="#alur" onclick="closeMobileMenu()">📋 Alur Pelayanan</a>
+  <a href="#persyaratan" onclick="closeMobileMenu()">📄 Persyaratan</a>
+  <a href="#informasi" onclick="closeMobileMenu()">📢 Informasi</a>
+  <a href="#pengaduan" onclick="closeMobileMenu()">📮 Pengaduan</a>
+  <a href="#faq" onclick="closeMobileMenu()">❓ FAQ</a>
+</div>
+
+<!-- HERO / BERANDA -->
+<section id="beranda">
+  <div class="hero-bg"></div>
+  <div class="hero-grid"></div>
+  <div class="hero-particles" id="particles"></div>
+  <div class="hero-content">
+    <div class="hero-left">
+      <div class="hero-badge">Dinas Perhubungan — Bidang Lalu Lintas Jalan</div>
+      <h1 class="hero-title">
+        Informasi & Akses
+        <span class="accent">Pelayanan Lalu Lintas</span>
+        Mudah, Cepat & Transparan
+      </h1>
+      <p class="hero-tagline">
+        Portal resmi layanan bidang lalu lintas jalan. Kami hadir untuk memberikan akses informasi, perizinan, dan pelayanan publik yang efisien, akuntabel, dan berorientasi pada kepuasan masyarakat.
+      </p>
+      <div class="hero-actions">
+        <a href="#layanan" class="btn-primary">⚙️ Akses Layanan</a>
+        <a href="#pengaduan" class="btn-secondary">📮 Laporkan Pengaduan</a>
+      </div>
+      <div class="hero-stats">
+        <div class="stat">
+          <div class="stat-num">24/7</div>
+          <div class="stat-label">Informasi Online</div>
+        </div>
+        <div class="stat">
+          <div class="stat-num">12+</div>
+          <div class="stat-label">Jenis Layanan</div>
+        </div>
+        <div class="stat">
+          <div class="stat-num">3 Hari</div>
+          <div class="stat-label">Respons Pengaduan</div>
+        </div>
+      </div>
+    </div>
+    <div class="hero-visual">
+      <div class="hero-card-stack">
+        <div class="info-card card-main">
+          <div class="card-header">
+            <div class="card-icon icon-gold">🚦</div>
+            <div>
+              <div class="card-title-text">Status Lalu Lintas</div>
+              <div class="card-sub">Update real-time</div>
+            </div>
+          </div>
+          <div class="card-item"><span class="card-item-dot dot-green"></span><span class="card-item-text">Jl. Ahmad Yani — Lancar</span></div>
+          <div class="card-item"><span class="card-item-dot dot-gold"></span><span class="card-item-text">Jl. Sudirman — Padat</span></div>
+          <div class="card-item"><span class="card-item-dot dot-teal"></span><span class="card-item-text">Jl. Gatot Subroto — Normal</span></div>
+          <div style="margin-top:1rem; padding-top:0.8rem; border-top:1px solid rgba(255,255,255,0.08);">
+            <div class="status-badge"><span class="status-dot"></span><span style="color:var(--gray);font-size:0.72rem;">Sistem aktif — data diperbarui</span></div>
+          </div>
+        </div>
+        <div class="info-card card-tertiary">
+          <div style="font-size:0.72rem;color:var(--gray);margin-bottom:0.4rem;">JAM PELAYANAN</div>
+          <div style="font-size:1rem;font-weight:700;color:var(--teal);">08:00 – 16:00</div>
+          <div style="font-size:0.7rem;color:var(--gray);margin-top:0.2rem;">Senin – Jumat</div>
+          <div style="font-size:0.7rem;color:var(--gray);">08:00 – 12:00 Sabtu</div>
+        </div>
+        <div class="info-card card-secondary">
+          <div class="card-header">
+            <div class="card-icon icon-gold">🏛️</div>
+            <div>
+              <div class="card-title-text">Kantor Kami</div>
+            </div>
+          </div>
+          <div style="font-size:0.73rem;color:var(--gray);line-height:1.6;">Jl. Raya Sudirman No. 123<br>Kota, Provinsi<br>📞 (021) 555-0100</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- INFO STRIP -->
+<div class="info-strip">
+  <div class="info-strip-inner">
+    <div class="info-item">
+      <span class="info-icon">📍</span>
+      <div class="info-text">
+        <strong>Alamat Kantor</strong>
+        <span>Jl. Raya Sudirman No. 123, Kota</span>
+      </div>
+    </div>
+    <div class="info-item">
+      <span class="info-icon">🕐</span>
+      <div class="info-text">
+        <strong>Jam Pelayanan</strong>
+        <span>Senin–Jumat 08:00–16:00 | Sabtu 08:00–12:00</span>
+      </div>
+    </div>
+    <div class="info-item">
+      <span class="info-icon">📞</span>
+      <div class="info-text">
+        <strong>Telepon</strong>
+        <span>(021) 555-0100 / 555-0101</span>
+      </div>
+    </div>
+    <div class="info-item">
+      <span class="info-icon">📧</span>
+      <div class="info-text">
+        <strong>Email</strong>
+        <span>info@dishub.go.id</span>
+      </div>
+    </div>
+    <a href="https://wa.me/6281234567890" class="contact-btn" target="_blank">
+      💬 Hubungi Kami via WA
+    </a>
+  </div>
+</div>
+
+<!-- PROFIL -->
+<section id="profil">
+  <div class="container">
+    <div class="fade-in">
+      <div class="section-label">Profil Instansi</div>
+      <h2 class="section-title">Mengenal Bidang <span class="gold">Lalu Lintas Jalan</span></h2>
+      <div class="divider"></div>
+    </div>
+    <div class="profile-grid" style="margin-top:2.5rem;">
+      <div class="visi-misi-grid fade-in">
+        <div class="vm-card">
+          <div class="vm-label">VISI</div>
+          <p class="vm-text">"Terwujudnya sistem lalu lintas jalan yang aman, tertib, lancar, dan berwawasan lingkungan guna mendukung pembangunan daerah yang berkelanjutan."</p>
+        </div>
+        <div class="vm-card">
+          <div class="vm-label">MISI</div>
+          <ul class="misi-list">
+            <li>Meningkatkan keselamatan dan ketertiban lalu lintas jalan</li>
+            <li>Mewujudkan pelayanan perizinan yang transparan dan akuntabel</li>
+            <li>Mengembangkan infrastruktur manajemen lalu lintas berbasis teknologi</li>
+            <li>Meningkatkan kualitas SDM di bidang lalu lintas jalan</li>
+            <li>Mendorong partisipasi masyarakat dalam pengelolaan lalu lintas</li>
+          </ul>
+        </div>
+        <!-- BIDANG -->
+        <div style="margin-top:1rem;">
+          <div class="section-label" style="margin-bottom:1rem;">Profil Bidang</div>
+          <div class="bidang-grid" style="grid-template-columns: repeat(2, 1fr);">
+            <div class="bidang-card">
+              <div class="bidang-icon">🚦</div>
+              <div class="bidang-name">Manajemen Rekayasa Lalu Lintas</div>
+              <div class="bidang-desc">Pengelolaan sistem sinyal, rambu, dan rekayasa jalan untuk kelancaran arus lalu lintas.</div>
+            </div>
+            <div class="bidang-card">
+              <div class="bidang-icon">📋</div>
+              <div class="bidang-name">Perizinan Angkutan</div>
+              <div class="bidang-desc">Penerbitan izin usaha angkutan, trayek, dan penyelenggaraan parkir.</div>
+            </div>
+            <div class="bidang-card">
+              <div class="bidang-icon">🛡️</div>
+              <div class="bidang-name">Keselamatan Lalu Lintas</div>
+              <div class="bidang-desc">Program edukasi, audit keselamatan, dan penanganan daerah rawan kecelakaan.</div>
+            </div>
+            <div class="bidang-card">
+              <div class="bidang-icon">📊</div>
+              <div class="bidang-name">Data & Analitik</div>
+              <div class="bidang-desc">Pengumpulan dan analisis data lalu lintas untuk perencanaan infrastruktur.</div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="fade-in">
+        <div class="pimpinan-card">
+          <div class="pimpinan-avatar">👤</div>
+          <div class="pimpinan-name">Ir. Budi Santoso, M.T.</div>
+          <div class="pimpinan-title">KEPALA BIDANG LALU LINTAS JALAN</div>
+          <p class="pimpinan-bio">Berpengalaman lebih dari 20 tahun di bidang transportasi dan lalu lintas jalan. Memiliki komitmen kuat dalam mewujudkan sistem transportasi yang aman, tertib, dan efisien bagi seluruh masyarakat.</p>
+        </div>
+        <div class="staff-grid" style="grid-template-columns: repeat(2, 1fr); margin-top: 1.2rem;">
+          <div class="staff-card">
+            <div class="staff-avatar">👤</div>
+            <div class="staff-name">Dra. Siti Rahayu</div>
+            <div class="staff-pos">Kasie Manajemen Rekayasa</div>
+          </div>
+          <div class="staff-card">
+            <div class="staff-avatar">👤</div>
+            <div class="staff-name">Ahmad Fauzi, S.T.</div>
+            <div class="staff-pos">Kasie Perizinan & Angkutan</div>
+          </div>
+          <div class="staff-card">
+            <div class="staff-avatar">👤</div>
+            <div class="staff-name">Rina Lestari, S.Kom.</div>
+            <div class="staff-pos">Kasie Data & Informatika</div>
+          </div>
+          <div class="staff-card">
+            <div class="staff-avatar">👤</div>
+            <div class="staff-name">Hendra Wijaya</div>
+            <div class="staff-pos">Kasie Keselamatan Jalan</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- LAYANAN -->
+<section id="layanan">
+  <div class="container">
+    <div class="fade-in" style="text-align:center; max-width:600px; margin:0 auto 1rem;">
+      <div class="section-label" style="justify-content:center;">Menu Layanan</div>
+      <h2 class="section-title">Jenis <span class="gold">Layanan Kami</span></h2>
+      <p class="section-desc">Berbagai layanan administrasi lalu lintas jalan tersedia untuk memenuhi kebutuhan masyarakat dan pelaku usaha transportasi.</p>
+    </div>
+    <div class="layanan-grid">
+      <div class="layanan-card fade-in">
+        <div class="layanan-icon">🚗</div>
+        <div class="layanan-title">Izin Usaha Angkutan Orang</div>
+        <div class="layanan-desc">Penerbitan dan perpanjangan izin operasional kendaraan angkutan penumpang umum dalam trayek maupun tidak dalam trayek.</div>
+        <div class="layanan-link" onclick="scrollToSection('persyaratan')">Lihat Persyaratan →</div>
+      </div>
+      <div class="layanan-card fade-in">
+        <div class="layanan-icon">🚛</div>
+        <div class="layanan-title">Izin Angkutan Barang</div>
+        <div class="layanan-desc">Izin operasional kendaraan pengangkut barang umum, barang berbahaya, dan angkutan alat berat di jalan.</div>
+        <div class="layanan-link" onclick="scrollToSection('persyaratan')">Lihat Persyaratan →</div>
+      </div>
+      <div class="layanan-card fade-in">
+        <div class="layanan-icon">🅿️</div>
+        <div class="layanan-title">Izin Penyelenggaraan Parkir</div>
+        <div class="layanan-desc">Permohonan izin pengelolaan tempat parkir, gedung parkir, dan parkir khusus di wilayah kota/kabupaten.</div>
+        <div class="layanan-link" onclick="scrollToSection('persyaratan')">Lihat Persyaratan →</div>
+      </div>
+      <div class="layanan-card fade-in">
+        <div class="layanan-icon">🛣️</div>
+        <div class="layanan-title">Analisis Dampak Lalu Lintas</div>
+        <div class="layanan-desc">Rekomendasi teknis andalalin untuk pembangunan pusat perbelanjaan, perumahan, gedung perkantoran dan fasilitas besar.</div>
+        <div class="layanan-link" onclick="scrollToSection('persyaratan')">Lihat Persyaratan →</div>
+      </div>
+      <div class="layanan-card fade-in">
+        <div class="layanan-icon">🚦</div>
+        <div class="layanan-title">Permohonan Rambu & Marka</div>
+        <div class="layanan-desc">Pengajuan pemasangan rambu lalu lintas, marka jalan, dan pagar pengaman untuk keselamatan pengguna jalan.</div>
+        <div class="layanan-link" onclick="scrollToSection('persyaratan')">Lihat Persyaratan →</div>
+      </div>
+      <div class="layanan-card fade-in">
+        <div class="layanan-icon">📜</div>
+        <div class="layanan-title">Izin Penggunaan Jalan</div>
+        <div class="layanan-desc">Permohonan penggunaan jalan untuk keperluan kegiatan sosial, olahraga, budaya, atau kepentingan publik lainnya.</div>
+        <div class="layanan-link" onclick="scrollToSection('persyaratan')">Lihat Persyaratan →</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ALUR PELAYANAN -->
+<section id="alur">
+  <div class="container">
+    <div class="fade-in" style="text-align:center;">
+      <div class="section-label" style="justify-content:center;">Transparansi Proses</div>
+      <h2 class="section-title">Alur <span class="gold">Pelayanan</span></h2>
+      <p class="section-desc" style="margin:0 auto;">Proses pelayanan yang jelas dan terstandar untuk memastikan setiap permohonan ditangani dengan tepat dan efisien.</p>
+    </div>
+    <div class="alur-steps fade-in">
+      <div class="alur-step">
+        <div class="step-icon">📝</div>
+        <div class="step-num">1</div>
+        <div class="step-title">Permohonan</div>
+        <div class="step-desc">Pemohon mengisi formulir dan melengkapi dokumen persyaratan</div>
+      </div>
+      <div class="alur-step">
+        <div class="step-icon">🔍</div>
+        <div class="step-num">2</div>
+        <div class="step-title">Verifikasi</div>
+        <div class="step-desc">Petugas memeriksa kelengkapan dan keabsahan dokumen</div>
+      </div>
+      <div class="alur-step">
+        <div class="step-icon">⚙️</div>
+        <div class="step-num">3</div>
+        <div class="step-title">Pemrosesan</div>
+        <div class="step-desc">Tim teknis memproses dan mengkaji permohonan secara menyeluruh</div>
+      </div>
+      <div class="alur-step">
+        <div class="step-icon">✅</div>
+        <div class="step-num">4</div>
+        <div class="step-title">Persetujuan</div>
+        <div class="step-desc">Kepala bidang menelaah dan memberikan persetujuan akhir</div>
+      </div>
+      <div class="alur-step">
+        <div class="step-icon">🎯</div>
+        <div class="step-num">5</div>
+        <div class="step-title">Penerbitan</div>
+        <div class="step-desc">Dokumen izin atau rekomendasi diterbitkan dan diserahkan</div>
+      </div>
+    </div>
+    <div class="fade-in" style="margin-top:3rem; text-align:center; background:rgba(201,162,39,0.08); border:1px solid rgba(201,162,39,0.2); border-radius:14px; padding:1.5rem;">
+      <div style="font-size:0.85rem; color:var(--gray);">⏱️ Estimasi waktu pelayanan: <strong style="color:var(--gold);">3–7 hari kerja</strong> tergantung jenis permohonan dan kelengkapan berkas</div>
+    </div>
+  </div>
+</section>
+
+<!-- PERSYARATAN -->
+<section id="persyaratan">
+  <div class="container">
+    <div class="fade-in">
+      <div class="section-label">Administrasi</div>
+      <h2 class="section-title">Persyaratan & <span class="gold">Download</span></h2>
+      <div class="divider"></div>
+    </div>
+    <div style="margin-top:2rem;">
+      <div class="syarat-tabs">
+        <button class="tab-btn active" onclick="switchTab('angkutan-orang')">Angkutan Orang</button>
+        <button class="tab-btn" onclick="switchTab('angkutan-barang')">Angkutan Barang</button>
+        <button class="tab-btn" onclick="switchTab('parkir')">Parkir</button>
+        <button class="tab-btn" onclick="switchTab('andalalin')">Andalalin</button>
+        <button class="tab-btn" onclick="switchTab('ijin-jalan')">Izin Jalan</button>
+      </div>
+      <div class="tab-content active" id="tab-angkutan-orang">
+        <div class="syarat-list fade-in">
+          <div class="syarat-item"><span class="syarat-check">✓</span><span class="syarat-text">Fotokopi KTP pemohon/penanggung jawab (2 lembar)</span></div>
+          <div class="syarat-item"><span class="syarat-check">✓</span><span class="syarat-text">NPWP Perusahaan / perorangan yang masih berlaku</span></div>
+          <div class="syarat-item"><span class="syarat-check">✓</span><span class="syarat-text">Akta pendirian perusahaan dan SK Kemenkumham</span></div>
+          <div class="syarat-item"><span class="syarat-check">✓</span><span class="syarat-text">Surat izin usaha perdagangan (SIUP) atau NIB dari OSS</span></div>
+          <div class="syarat-item"><span class="syarat-check">✓</span><span class="syarat-text">STNK dan BPKB kendaraan yang akan dioperasikan</span></div>
+          <div class="syarat-item"><span class="syarat-check">✓</span><span class="syarat-text">KIR kendaraan yang masih berlaku</span></div>
+          <div class="syarat-item"><span class="syarat-check">✓</span><span class="syarat-text">Bukti kepemilikan / sewa kendaraan (minimal 5 unit)</span></div>
+          <div class="syarat-item"><span class="syarat-check">✓</span><span class="syarat-text">Surat pernyataan kesanggupan memenuhi kewajiban operasional</span></div>
+        </div>
+        <div class="download-box fade-in">
+          <div class="download-title">📥 Download Formulir & Dokumen</div>
+          <div class="download-list" id="dl-angkutan-orang">
+            <div style="font-size:0.8rem;color:var(--gray);padding:0.5rem 0;">⏳ Memuat...</div>
+          </div>
+        </div>
+      </div>
+      <div class="tab-content" id="tab-angkutan-barang">
+        <div class="syarat-list fade-in">
+          <div class="syarat-item"><span class="syarat-check">✓</span><span class="syarat-text">Fotokopi KTP pemohon / direktur perusahaan</span></div>
+          <div class="syarat-item"><span class="syarat-check">✓</span><span class="syarat-text">NPWP aktif atas nama perusahaan</span></div>
+          <div class="syarat-item"><span class="syarat-check">✓</span><span class="syarat-text">Akta pendirian perusahaan dan SK pengesahan</span></div>
+          <div class="syarat-item"><span class="syarat-check">✓</span><span class="syarat-text">NIB dari sistem OSS Kementerian Investasi</span></div>
+          <div class="syarat-item"><span class="syarat-check">✓</span><span class="syarat-text">STNK seluruh armada angkutan barang</span></div>
+          <div class="syarat-item"><span class="syarat-check">✓</span><span class="syarat-text">Buku KIR kendaraan (wajib masih berlaku)</span></div>
+          <div class="syarat-item"><span class="syarat-check">✓</span><span class="syarat-text">Sertifikat uji laik jalan kendaraan barang</span></div>
+        </div>
+        <div class="download-box fade-in">
+          <div class="download-title">📥 Formulir Angkutan Barang</div>
+          <div class="download-list" id="dl-angkutan-barang">
+            <div style="font-size:0.8rem;color:var(--gray);padding:0.5rem 0;">⏳ Memuat...</div>
+          </div>
+        </div>
+      </div>
+      <div class="tab-content" id="tab-parkir">
+        <div class="syarat-list fade-in">
+          <div class="syarat-item"><span class="syarat-check">✓</span><span class="syarat-text">KTP pemohon / penanggung jawab yang berlaku</span></div>
+          <div class="syarat-item"><span class="syarat-check">✓</span><span class="syarat-text">Denah lokasi tempat parkir dan luas area</span></div>
+          <div class="syarat-item"><span class="syarat-check">✓</span><span class="syarat-text">Bukti kepemilikan atau hak guna lahan parkir</span></div>
+          <div class="syarat-item"><span class="syarat-check">✓</span><span class="syarat-text">Izin mendirikan bangunan (IMB/PBG) jika gedung parkir</span></div>
+          <div class="syarat-item"><span class="syarat-check">✓</span><span class="syarat-text">Rencana tarif parkir yang akan diberlakukan</span></div>
+          <div class="syarat-item"><span class="syarat-check">✓</span><span class="syarat-text">Surat pernyataan keselamatan dan keamanan parkir</span></div>
+        </div>
+        <div class="download-box fade-in">
+          <div class="download-title">📥 Formulir Izin Parkir</div>
+          <div class="download-list" id="dl-parkir">
+            <div style="font-size:0.8rem;color:var(--gray);padding:0.5rem 0;">⏳ Memuat...</div>
+          </div>
+        </div>
+      </div>
+      <div class="tab-content" id="tab-andalalin">
+        <div class="syarat-list fade-in">
+          <div class="syarat-item"><span class="syarat-check">✓</span><span class="syarat-text">Proposal permohonan andalalin dan data proyek</span></div>
+          <div class="syarat-item"><span class="syarat-check">✓</span><span class="syarat-text">Gambar site plan / denah lokasi proyek</span></div>
+          <div class="syarat-item"><span class="syarat-check">✓</span><span class="syarat-text">Data teknis bangunan (luas, fungsi, kapasitas parkir)</span></div>
+          <div class="syarat-item"><span class="syarat-check">✓</span><span class="syarat-text">Dokumen lingkungan (AMDAL/UKL-UPL)</span></div>
+          <div class="syarat-item"><span class="syarat-check">✓</span><span class="syarat-text">Hasil survei volume lalu lintas eksisting</span></div>
+          <div class="syarat-item"><span class="syarat-check">✓</span><span class="syarat-text">Peta jaringan jalan sekitar lokasi proyek</span></div>
+        </div>
+        <div class="download-box fade-in">
+          <div class="download-title">📥 Formulir Andalalin</div>
+          <div class="download-list" id="dl-andalalin">
+            <div style="font-size:0.8rem;color:var(--gray);padding:0.5rem 0;">⏳ Memuat...</div>
+          </div>
+        </div>
+      </div>
+      <div class="tab-content" id="tab-ijin-jalan">
+        <div class="syarat-list fade-in">
+          <div class="syarat-item"><span class="syarat-check">✓</span><span class="syarat-text">Surat permohonan resmi dari penyelenggara kegiatan</span></div>
+          <div class="syarat-item"><span class="syarat-check">✓</span><span class="syarat-text">KTP penanggung jawab kegiatan</span></div>
+          <div class="syarat-item"><span class="syarat-check">✓</span><span class="syarat-text">Proposal kegiatan dan jadwal pelaksanaan</span></div>
+          <div class="syarat-item"><span class="syarat-check">✓</span><span class="syarat-text">Peta rute / denah lokasi kegiatan</span></div>
+          <div class="syarat-item"><span class="syarat-check">✓</span><span class="syarat-text">Rekomendasi dari Kepolisian (Ditlantas)</span></div>
+          <div class="syarat-item"><span class="syarat-check">✓</span><span class="syarat-text">Rencana pengalihan arus lalu lintas sementara</span></div>
+        </div>
+        <div class="download-box fade-in">
+          <div class="download-title">📥 Formulir Izin Penggunaan Jalan</div>
+          <div class="download-list" id="dl-ijin-jalan">
+            <div style="font-size:0.8rem;color:var(--gray);padding:0.5rem 0;">⏳ Memuat...</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- INFORMASI LALU LINTAS -->
+<section id="informasi">
+  <div class="container">
+    <div class="fade-in">
+      <div class="section-label">Info Terkini</div>
+      <h2 class="section-title">Informasi <span class="gold">Lalu Lintas & Pengumuman</span></h2>
+      <div class="divider"></div>
+    </div>
+    <div class="info-grid">
+      <div class="fade-in">
+        <div style="font-size:0.82rem; font-weight:700; color:var(--teal); letter-spacing:0.05em; margin-bottom:1rem;">🚧 REKAYASA LALU LINTAS AKTIF</div>
+        <div class="rekayasa-grid" id="rekayasaGrid">
+          <div style="font-size:0.8rem;color:var(--gray);padding:1rem 0;">⏳ Memuat data...</div>
+        </div>
+      </div>
+      <div class="fade-in">
+        <div style="font-size:0.82rem; font-weight:700; color:var(--gold); letter-spacing:0.05em; margin-bottom:1rem;">📢 PENGUMUMAN TERBARU</div>
+        <div class="pengumuman-list" id="pengumumanList">
+          <div style="font-size:0.8rem;color:var(--gray);padding:1rem 0;">⏳ Memuat data...</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- PENGADUAN -->
+<section id="pengaduan">
+  <div class="container">
+    <div class="fade-in" style="text-align:center;">
+      <div class="section-label" style="justify-content:center;">Aspirasi Masyarakat</div>
+      <h2 class="section-title">Pengaduan & <span class="gold">Kontak</span></h2>
+      <p class="section-desc" style="margin:0 auto;">Kami berkomitmen merespons setiap pengaduan masyarakat dalam 3 hari kerja. Sampaikan keluhan, saran, atau laporan Anda melalui saluran yang tersedia.</p>
+    </div>
+    <div class="pengaduan-grid">
+      <div class="form-card fade-in">
+        <div class="form-title">📮 Form Pengaduan Masyarakat</div>
+        <div class="form-row">
+          <div class="form-group">
+            <label class="form-label">NAMA LENGKAP *</label>
+            <input type="text" class="form-input" placeholder="Nama Anda" id="namaInput">
+          </div>
+          <div class="form-group">
+            <label class="form-label">NO. TELEPON / WA *</label>
+            <input type="text" class="form-input" placeholder="08xxxxxxxxxx" id="hpInput">
+          </div>
+        </div>
+        <div class="form-group">
+          <label class="form-label">EMAIL (OPSIONAL)</label>
+          <input type="email" class="form-input" placeholder="email@contoh.com" id="emailInput">
+        </div>
+        <div class="form-group">
+          <label class="form-label">KATEGORI PENGADUAN *</label>
+          <select class="form-select" id="kategoriSelect">
+            <option value="">— Pilih Kategori —</option>
+            <option>Perizinan Angkutan</option>
+            <option>Rekayasa Lalu Lintas</option>
+            <option>Keselamatan Jalan</option>
+            <option>Pengelolaan Parkir</option>
+            <option>Pelayanan Pegawai</option>
+            <option>Pelanggaran Lalu Lintas</option>
+            <option>Infrastruktur Jalan</option>
+            <option>Lainnya</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label class="form-label">LOKASI KEJADIAN</label>
+          <input type="text" class="form-input" placeholder="Nama jalan / wilayah / lokasi" id="lokasiInput">
+        </div>
+        <div class="form-group">
+          <label class="form-label">URAIAN PENGADUAN *</label>
+          <textarea class="form-textarea" placeholder="Deskripsikan pengaduan Anda secara detail..." id="aduanTextarea"></textarea>
+        </div>
+        <button class="submit-btn" onclick="submitPengaduan()">📤 Kirim Pengaduan</button>
+      </div>
+      <!-- CEK STATUS TIKET -->
+      <div class="form-card fade-in" style="margin-top:1.5rem;">
+        <div class="form-title">🔍 Cek Status Pengaduan</div>
+        <div style="font-size:0.82rem;color:var(--gray);margin-bottom:1rem;">Masukkan nomor tiket yang diterima saat mengirim pengaduan untuk mengecek status penanganan.</div>
+        <div class="form-row">
+          <div class="form-group" style="flex:1;">
+            <label class="form-label">NOMOR TIKET</label>
+            <input type="text" class="form-input" placeholder="Contoh: TKT-2026-048" id="cekTiketInput" style="text-transform:uppercase;">
+          </div>
+        </div>
+        <button class="submit-btn" style="margin-top:0.5rem;" onclick="cekStatus()">🔍 Cek Status</button>
+        <div id="statusResult" style="display:none;margin-top:1rem;"></div>
+      </div>
+      <div class="fade-in">
+        <div style="font-size:0.82rem; font-weight:700; color:var(--gray); letter-spacing:0.05em; margin-bottom:1.2rem;">SALURAN PENGADUAN</div>
+        <div class="kontak-info">
+          <div class="kontak-card">
+            <div class="kontak-icon ki-gold">📞</div>
+            <div class="kontak-detail">
+              <strong>Telepon Hotline</strong>
+              <a href="tel:0215550100">(021) 555-0100</a><br>
+              <span>Senin–Jumat 08:00–16:00</span>
+            </div>
+          </div>
+          <div class="kontak-card">
+            <div class="kontak-icon ki-green">💬</div>
+            <div class="kontak-detail">
+              <strong>WhatsApp Resmi</strong>
+              <a href="https://wa.me/6281234567890" target="_blank">0812-3456-7890</a><br>
+              <span>Senin–Sabtu 08:00–20:00</span>
+            </div>
+          </div>
+          <div class="kontak-card">
+            <div class="kontak-icon ki-teal">📧</div>
+            <div class="kontak-detail">
+              <strong>Email Resmi</strong>
+              <a href="mailto:pengaduan@dishub.go.id">pengaduan@dishub.go.id</a><br>
+              <span>Respons dalam 1×24 jam kerja</span>
+            </div>
+          </div>
+          <div class="kontak-card">
+            <div class="kontak-icon ki-red">🏛️</div>
+            <div class="kontak-detail">
+              <strong>Kunjungan Langsung</strong>
+              <span>Jl. Raya Sudirman No. 123</span><br>
+              <span>Loket Pengaduan Lt. 1</span>
+            </div>
+          </div>
+          <div class="kontak-card">
+            <div class="kontak-icon ki-gold">📱</div>
+            <div class="kontak-detail">
+              <strong>Media Sosial</strong>
+              <a href="#" target="_blank">@DishubKota</a> (Instagram/Twitter/FB)<br>
+              <span>Dipantau setiap hari kerja</span>
+            </div>
+          </div>
+        </div>
+        <div style="margin-top:1.2rem; background:rgba(42,157,143,0.1); border:1px solid rgba(42,157,143,0.25); border-radius:12px; padding:1rem; font-size:0.8rem; color:var(--gray); line-height:1.6;">
+          🕐 <strong style="color:var(--green);">Komitmen Respons:</strong> Seluruh pengaduan yang masuk akan diverifikasi dan direspons paling lambat <strong style="color:var(--white);">3 hari kerja</strong> sejak diterima. Pengaduan darurat ditangani dalam <strong style="color:var(--white);">1×24 jam</strong>.
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FAQ -->
+<section id="faq">
+  <div class="container">
+    <div class="fade-in" style="text-align:center;">
+      <div class="section-label" style="justify-content:center;">Pertanyaan Umum</div>
+      <h2 class="section-title">FAQ — <span class="gold">Tanya Jawab</span></h2>
+      <p class="section-desc" style="margin:0 auto;">Kumpulan pertanyaan yang sering diajukan terkait layanan Bidang Lalu Lintas Jalan.</p>
+    </div>
+    <div class="faq-grid" style="margin-top:2.5rem;">
+      <div class="faq-item fade-in" onclick="toggleFaq(this)">
+        <div class="faq-question">Berapa lama proses penerbitan izin angkutan? <span class="faq-toggle">+</span></div>
+        <div class="faq-answer">Proses penerbitan izin angkutan umum membutuhkan waktu 5–7 hari kerja sejak berkas dinyatakan lengkap dan benar. Untuk izin perpanjangan, prosesnya lebih singkat yaitu 3–5 hari kerja.</div>
+      </div>
+      <div class="faq-item fade-in" onclick="toggleFaq(this)">
+        <div class="faq-question">Apa syarat minimal armada untuk izin angkutan orang? <span class="faq-toggle">+</span></div>
+        <div class="faq-answer">Untuk permohonan baru, minimal pemohon harus memiliki 5 unit kendaraan yang memenuhi syarat teknis dan kelaikan jalan. Semua kendaraan harus sudah lulus uji KIR dan memiliki STNK aktif.</div>
+      </div>
+      <div class="faq-item fade-in" onclick="toggleFaq(this)">
+        <div class="faq-question">Bagaimana cara melaporkan jalan rusak? <span class="faq-toggle">+</span></div>
+        <div class="faq-answer">Untuk kerusakan jalan, Anda dapat melapor melalui form pengaduan di portal ini, WhatsApp resmi, atau datang langsung ke kantor kami. Sertakan foto lokasi, nama jalan, dan koordinat GPS jika memungkinkan untuk mempercepat penanganan.</div>
+      </div>
+      <div class="faq-item fade-in" onclick="toggleFaq(this)">
+        <div class="faq-question">Apakah bisa mengurus izin secara online? <span class="faq-toggle">+</span></div>
+        <div class="faq-answer">Saat ini beberapa layanan sudah bisa dimulai secara online melalui form permohonan di portal ini. Namun pengambilan dokumen fisik tetap dilakukan langsung di kantor. Kami sedang mengembangkan sistem e-perizinan yang lebih lengkap.</div>
+      </div>
+      <div class="faq-item fade-in" onclick="toggleFaq(this)">
+        <div class="faq-question">Kapan saya perlu mengurus Andalalin? <span class="faq-toggle">+</span></div>
+        <div class="faq-answer">Analisis Dampak Lalu Lintas (Andalalin) wajib dilakukan untuk pembangunan pusat perbelanjaan (>500 m²), perumahan (>200 unit), gedung perkantoran (>3.000 m²), fasilitas pendidikan (>1.000 siswa), dan kawasan industri.</div>
+      </div>
+      <div class="faq-item fade-in" onclick="toggleFaq(this)">
+        <div class="faq-question">Berapa biaya penerbitan izin? <span class="faq-toggle">+</span></div>
+        <div class="faq-answer">Semua layanan perizinan di Dinas Perhubungan tidak dikenakan biaya (GRATIS) sesuai dengan Peraturan Daerah yang berlaku. Jika ada pihak yang meminta biaya di luar prosedur resmi, harap segera laporkan kepada kami.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-grid">
+    <div class="footer-brand">
+      <div style="display:flex;align-items:center;gap:12px;margin-bottom:0.5rem;">
+        <div style="width:38px;height:38px;background:linear-gradient(135deg,var(--gold),var(--gold-light));border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:1.2rem;color:var(--navy);font-weight:700;">🚦</div>
+        <strong>Dinas Perhubungan</strong>
+      </div>
+      <p>Bidang Lalu Lintas Jalan<br>Jl. Raya Sudirman No. 123, Kota<br>Telp: (021) 555-0100<br>Email: info@dishub.go.id</p>
+    </div>
+    <div class="footer-col">
+      <h4>LAYANAN</h4>
+      <ul>
+        <li><a href="#layanan">Angkutan Orang</a></li>
+        <li><a href="#layanan">Angkutan Barang</a></li>
+        <li><a href="#layanan">Izin Parkir</a></li>
+        <li><a href="#layanan">Andalalin</a></li>
+        <li><a href="#layanan">Izin Jalan</a></li>
+      </ul>
+    </div>
+    <div class="footer-col">
+      <h4>INFORMASI</h4>
+      <ul>
+        <li><a href="#informasi">Rekayasa Lalin</a></li>
+        <li><a href="#informasi">Pengumuman</a></li>
+        <li><a href="#persyaratan">Persyaratan</a></li>
+        <li><a href="#alur">Alur Pelayanan</a></li>
+        <li><a href="#faq">FAQ</a></li>
+      </ul>
+    </div>
+    <div class="footer-col">
+      <h4>PENGADUAN</h4>
+      <ul>
+        <li><a href="#pengaduan">Form Online</a></li>
+        <li><a href="tel:0215550100">Hotline (021) 555-0100</a></li>
+        <li><a href="https://wa.me/6281234567890">WhatsApp Resmi</a></li>
+        <li><a href="mailto:pengaduan@dishub.go.id">Email Pengaduan</a></li>
+      </ul>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <div class="footer-copy">© 2026 Dinas Perhubungan — Bidang Lalu Lintas Jalan. Hak Cipta Dilindungi.</div>
+    <div class="social-links">
+      <a class="social-link" href="#" title="Instagram">📷</a>
+      <a class="social-link" href="#" title="Facebook">📘</a>
+      <a class="social-link" href="#" title="Twitter/X">🐦</a>
+      <a class="social-link" href="#" title="YouTube">▶️</a>
+    </div>
+  </div>
+</footer>
+
+<!-- FLOATING BUTTONS -->
+<div class="floating-contact">
+  <div class="float-btn-wrap">
+    <span class="float-label">Kembali ke Atas</span>
+    <button class="float-btn float-top" onclick="window.scrollTo({top:0,behavior:'smooth'})">↑</button>
+  </div>
+  <div class="float-btn-wrap">
+    <span class="float-label">Chat WhatsApp</span>
+    <a href="https://wa.me/6281234567890" class="float-btn float-wa" target="_blank">💬</a>
+  </div>
+</div>
+
+<!-- TOAST -->
+<div class="toast" id="toast"></div>
+
+<script>
+  // PARTICLES
+  const container = document.getElementById('particles');
+  for (let i = 0; i < 20; i++) {
+    const p = document.createElement('div');
+    p.className = 'particle';
+    const size = Math.random() * 4 + 2;
+    p.style.cssText = `
+      width:${size}px;height:${size}px;
+      left:${Math.random()*100}%;
+      bottom:${Math.random()*30}%;
+      animation-delay:${Math.random()*8}s;
+      animation-duration:${Math.random()*6+6}s;
+    `;
+    container.appendChild(p);
+  }
+
+  // SCROLL ANIMATIONS
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach((e, i) => {
+      if (e.isIntersecting) {
+        setTimeout(() => e.target.classList.add('visible'), i * 100);
+      }
+    });
+  }, { threshold: 0.1 });
+  document.querySelectorAll('.fade-in').forEach(el => observer.observe(el));
+
+  // NAV SCROLL
+  window.addEventListener('scroll', () => {
+    const nav = document.getElementById('navbar');
+    nav.style.background = window.scrollY > 50
+      ? 'rgba(10,22,40,0.98)' : 'rgba(10,22,40,0.92)';
+  });
+
+  // HAMBURGER
+  function toggleMenu() {
+    const menu = document.getElementById('mobileMenu');
+    const hb = document.getElementById('hamburger');
+    menu.classList.toggle('open');
+    hb.classList.toggle('active');
+  }
+  function closeMobileMenu() {
+    document.getElementById('mobileMenu').classList.remove('open');
+  }
+
+  // SCROLL TO SECTION
+  function scrollToSection(id) {
+    document.getElementById(id)?.scrollIntoView({ behavior: 'smooth' });
+  }
+
+  // TABS
+  function switchTab(tabId) {
+    document.querySelectorAll('.tab-content').forEach(t => t.classList.remove('active'));
+    document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+    document.getElementById('tab-' + tabId).classList.add('active');
+    event.target.classList.add('active');
+  }
+
+  // FAQ
+  function toggleFaq(el) {
+    const isOpen = el.classList.contains('open');
+    document.querySelectorAll('.faq-item').forEach(f => f.classList.remove('open'));
+    if (!isOpen) el.classList.add('open');
+  }
+
+  // TOAST
+  function showToast(msg, color) {
+    const t = document.getElementById('toast');
+    t.textContent = msg;
+    t.style.background = color || 'var(--green)';
+    t.classList.add('show');
+    setTimeout(() => t.classList.remove('show'), 3500);
+  }
+
+  // ===== LOAD DATA REAL DARI SERVER =====
+  const KATEGORI_MAP = {
+    'Angkutan Orang':  'dl-angkutan-orang',
+    'Angkutan Barang': 'dl-angkutan-barang',
+    'Parkir':          'dl-parkir',
+    'Andalalin':       'dl-andalalin',
+    'Izin Jalan':      'dl-ijin-jalan',
+  };
+
+  function renderDownloadList(containerId, files) {
+    const el = document.getElementById(containerId);
+    if (!el) return;
+    if (!files || files.length === 0) {
+      el.innerHTML = '<div style="font-size:0.8rem;color:var(--gray);padding:0.5rem 0;">Belum ada file tersedia.</div>';
+      return;
+    }
+    el.innerHTML = files.map(f => `
+      <div class="download-item" onclick="fakeDownload('${f.nama.replace(/'/g,"\\'")}')">
+        <div class="download-item-left">
+          <span class="file-icon">${f.icon||'📄'}</span>
+          <div><div class="file-name">${f.nama}</div><div class="file-size">${f.tipe} • ${f.ukuran}</div></div>
+        </div>
+        <button class="dl-btn">⬇ Unduh</button>
+      </div>`).join('');
+  }
+
+  async function loadPublicData() {
+    try {
+      const [rekayasa, pengumuman, files] = await Promise.all([
+        fetch('/api/rekayasa').then(r => r.json()),
+        fetch('/api/pengumuman').then(r => r.json()),
+        fetch('/api/files').then(r => r.json()),
+      ]);
+
+      // Render rekayasa
+      const rgEl = document.getElementById('rekayasaGrid');
+      if (rgEl) {
+        if (!rekayasa.length) {
+          rgEl.innerHTML = '<div style="font-size:0.8rem;color:var(--gray);">Tidak ada rekayasa lalu lintas aktif.</div>';
+        } else {
+          const tipeLabel = {urgent:'🔴 MENDESAK', info:'🔵 INFO', normal:'🟢 NORMAL'};
+          const tipeCls   = {urgent:'tag-urgent', info:'tag-info', normal:'tag-normal'};
+          rgEl.innerHTML  = rekayasa.map(r => {
+            const meta = r.mulai ? `📅 ${r.mulai}${r.selesai ? ' – ' + r.selesai : ''} | ${r.jam||''}` : (r.jam||'');
+            return `<div class="rekayasa-card ${r.tipe||'normal'}">
+              <div class="rekayasa-header">
+                <div class="rekayasa-title">${r.judul}</div>
+                <span class="rekayasa-tag ${tipeCls[r.tipe]||'tag-normal'}">${tipeLabel[r.tipe]||r.tipe}</span>
+              </div>
+              <div class="rekayasa-desc">${r.deskripsi}</div>
+              <div class="rekayasa-meta">${meta}</div>
+            </div>`;
+          }).join('');
+        }
+      }
+
+      // Render pengumuman
+      const pgEl = document.getElementById('pengumumanList');
+      if (pgEl) {
+        if (!pengumuman.length) {
+          pgEl.innerHTML = '<div style="font-size:0.8rem;color:var(--gray);">Belum ada pengumuman.</div>';
+        } else {
+          pgEl.innerHTML = pengumuman.slice(0, 5).map(p => {
+            const tgl = p.tanggal
+              ? new Date(p.tanggal).toLocaleDateString('id-ID',{day:'2-digit',month:'short',year:'numeric'}).toUpperCase()
+              : p.tanggal;
+            return `<div class="pengumuman-item">
+              <div class="pengumuman-date">${tgl}</div>
+              <div class="pengumuman-title">${p.judul}</div>
+            </div>`;
+          }).join('');
+        }
+      }
+
+      // Render downloads per kategori
+      Object.entries(KATEGORI_MAP).forEach(([kat, id]) => {
+        renderDownloadList(id, files.filter(f => f.kategori === kat));
+      });
+
+    } catch(e) {
+      // Server tidak berjalan — tampilkan pesan minimal
+      const rgEl = document.getElementById('rekayasaGrid');
+      if (rgEl) rgEl.innerHTML = '<div style="font-size:0.8rem;color:var(--gray);">Data tidak tersedia (server offline).</div>';
+      const pgEl = document.getElementById('pengumumanList');
+      if (pgEl) pgEl.innerHTML = '<div style="font-size:0.8rem;color:var(--gray);">Data tidak tersedia (server offline).</div>';
+      Object.values(KATEGORI_MAP).forEach(id => {
+        const el = document.getElementById(id);
+        if (el) el.innerHTML = '<div style="font-size:0.8rem;color:var(--gray);">Data tidak tersedia.</div>';
+      });
+    }
+  }
+
+  document.addEventListener('DOMContentLoaded', loadPublicData);
+
+  // FAKE DOWNLOAD — cek server untuk URL asli
+  async function fakeDownload(name) {
+    try {
+      const files = await fetch('/api/files').then(r => r.json());
+      const found = files.find(f => f.nama === name);
+      if (found && found.url) { window.open(found.url, '_blank'); return; }
+    } catch(e) {}
+    showToast('✅ Mengunduh: ' + name + '...', 'var(--teal-dark)');
+  }
+
+  // SUBMIT PENGADUAN — kirim ke server
+  async function submitPengaduan() {
+    const nama     = document.getElementById('namaInput').value.trim();
+    const hp       = document.getElementById('hpInput').value.trim();
+    const email    = document.getElementById('emailInput').value.trim();
+    const kategori = document.getElementById('kategoriSelect').value;
+    const lokasi   = document.getElementById('lokasiInput').value.trim();
+    const aduan    = document.getElementById('aduanTextarea').value.trim();
+
+    if (!nama || !hp || !kategori || !aduan) {
+      showToast('⚠️ Mohon lengkapi semua field wajib (*)', '#e63946');
+      return;
+    }
+
+    // Format tanggal
+    const now     = new Date();
+    const bulan   = ['Jan','Feb','Mar','Apr','Mei','Jun','Jul','Agt','Sep','Okt','Nov','Des'];
+    const tanggal = `${String(now.getDate()).padStart(2,'0')} ${bulan[now.getMonth()]} ${now.getFullYear()}`;
+
+    const newEntry = {
+      tanggal, nama, hp, email, kategori,
+      lokasi, uraian: aduan, prioritas: 'Sedang', status: 'Baru', catatan: ''
+    };
+
+    try {
+      const res      = await fetch('/api/pengaduan', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(newEntry)
+      });
+      const result   = await res.json();
+      const ticketId = result.id || '?';
+
+      // Tampilkan sukses dengan nomor tiket
+      const t = document.getElementById('toast');
+      t.style.background = 'var(--green)';
+      t.innerHTML = `✅ Pengaduan berhasil dikirim!<br><span style="font-family:monospace;font-size:0.9em;">No. Tiket: <strong>${ticketId}</strong></span><br><small>Simpan nomor ini untuk cek status.</small>`;
+      t.classList.add('show');
+      setTimeout(() => t.classList.remove('show'), 5000);
+
+      // Reset form
+      ['namaInput','hpInput','emailInput','lokasiInput'].forEach(id => document.getElementById(id).value = '');
+      document.getElementById('kategoriSelect').value = '';
+      document.getElementById('aduanTextarea').value  = '';
+
+      // Auto-isi kolom cek status
+      const cekInput = document.getElementById('cekTiketInput');
+      if (cekInput) { cekInput.value = ticketId; }
+    } catch(e) {
+      showToast('⚠️ Gagal mengirim pengaduan. Pastikan server berjalan.', '#e63946');
+    }
+  }
+
+  // CEK STATUS TIKET
+  async function cekStatus() {
+    const id = (document.getElementById('cekTiketInput').value || '').trim().toUpperCase();
+    if (!id) { showToast('⚠️ Masukkan nomor tiket', '#e63946'); return; }
+
+    const result = document.getElementById('statusResult');
+    result.style.display = 'block';
+    result.innerHTML = '<div style="font-size:0.85rem;color:var(--gray);text-align:center;padding:1rem;">⏳ Mencari tiket...</div>';
+
+    try {
+      const pengaduan = await fetch('/api/pengaduan').then(r => r.json());
+      const tiket     = pengaduan.find(d => d.id === id);
+
+      if (!tiket) {
+        result.innerHTML = `<div style="background:rgba(230,57,70,0.1);border:1px solid rgba(230,57,70,0.3);border-radius:10px;padding:1rem;font-size:0.85rem;color:var(--red);">❌ Nomor tiket <strong>${id}</strong> tidak ditemukan. Pastikan nomor tiket Anda benar.</div>`;
+        return;
+      }
+
+      const stColor = {Baru:'var(--teal)',Diproses:'var(--gold)',Selesai:'var(--green)',Ditolak:'var(--red)'};
+      const color   = stColor[tiket.status] || 'var(--gray)';
+      result.innerHTML = `
+        <div style="background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.1);border-radius:10px;padding:1.2rem;">
+          <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:0.8rem;flex-wrap:wrap;gap:0.5rem;">
+            <div style="font-family:'DM Mono',monospace;font-size:0.88rem;color:var(--gold);">${tiket.id}</div>
+            <div style="padding:0.3rem 0.9rem;border-radius:100px;background:${color}22;color:${color};font-size:0.78rem;font-weight:700;">${tiket.status}</div>
+          </div>
+          <div style="font-size:0.85rem;font-weight:600;margin-bottom:0.3rem;">${tiket.kategori}</div>
+          <div style="font-size:0.78rem;color:var(--gray);margin-bottom:0.6rem;line-height:1.5;">${tiket.uraian.substring(0,120)}${tiket.uraian.length>120?'...':''}</div>
+          <div style="font-size:0.72rem;color:var(--gray);">📅 Tanggal masuk: ${tiket.tanggal}</div>
+          ${tiket.catatan ? `<div style="margin-top:0.8rem;padding:0.8rem;background:rgba(42,157,143,0.08);border:1px solid rgba(42,157,143,0.2);border-radius:8px;font-size:0.78rem;line-height:1.5;"><strong style="color:var(--green);">📝 Catatan Penanganan:</strong><br>${tiket.catatan}</div>` : ''}
+        </div>`;
+    } catch(e) {
+      result.innerHTML = '<div style="background:rgba(230,57,70,0.1);border:1px solid rgba(230,57,70,0.3);border-radius:10px;padding:1rem;font-size:0.85rem;color:var(--red);">⚠️ Gagal menghubungi server. Pastikan server Node.js berjalan.</div>';
+    }
+  }
+</script>
+</body>
+</html>

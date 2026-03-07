@@ -1,0 +1,344 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Login Admin — Dishub</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --navy:    #0a0c14;
+    --navy2:   #0d1117;
+    --panel:   #111827;
+    --border:  rgba(255,255,255,0.08);
+    --gold:    #c9a227;
+    --gold-lt: #e8c547;
+    --teal:    #2a9d8f;
+    --red:     #e63946;
+    --muted:   #8b949e;
+    --text:    #e6edf3;
+  }
+
+  body {
+    font-family: 'Inter', sans-serif;
+    background: var(--navy);
+    color: var(--text);
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 1.5rem;
+    overflow: hidden;
+  }
+
+  /* ── background blobs ── */
+  body::before, body::after {
+    content: '';
+    position: fixed;
+    border-radius: 50%;
+    filter: blur(120px);
+    pointer-events: none;
+    z-index: 0;
+  }
+  body::before {
+    width: 500px; height: 500px;
+    background: radial-gradient(circle, rgba(201,162,39,0.12) 0%, transparent 70%);
+    top: -100px; left: -100px;
+  }
+  body::after {
+    width: 400px; height: 400px;
+    background: radial-gradient(circle, rgba(42,157,143,0.1) 0%, transparent 70%);
+    bottom: -80px; right: -80px;
+  }
+
+  /* ── card ── */
+  .login-card {
+    position: relative;
+    z-index: 1;
+    width: 100%;
+    max-width: 420px;
+    background: var(--panel);
+    border: 1px solid var(--border);
+    border-radius: 20px;
+    padding: 2.5rem 2rem;
+    box-shadow: 0 24px 64px rgba(0,0,0,0.5);
+  }
+
+  /* ── logo ── */
+  .login-logo {
+    display: flex;
+    align-items: center;
+    gap: 0.8rem;
+    margin-bottom: 2rem;
+    justify-content: center;
+  }
+  .logo-icon {
+    width: 48px; height: 48px;
+    background: linear-gradient(135deg, rgba(201,162,39,0.2), rgba(201,162,39,0.05));
+    border: 1px solid rgba(201,162,39,0.3);
+    border-radius: 12px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 1.5rem;
+  }
+  .logo-text strong {
+    display: block;
+    font-size: 1rem;
+    font-weight: 700;
+    color: var(--gold);
+  }
+  .logo-text span {
+    font-size: 0.72rem;
+    color: var(--muted);
+  }
+
+  /* ── heading ── */
+  .login-title {
+    text-align: center;
+    font-size: 1.3rem;
+    font-weight: 700;
+    margin-bottom: 0.4rem;
+  }
+  .login-subtitle {
+    text-align: center;
+    font-size: 0.8rem;
+    color: var(--muted);
+    margin-bottom: 2rem;
+  }
+
+  /* ── form ── */
+  .form-group { margin-bottom: 1.2rem; }
+  .form-label {
+    display: block;
+    font-size: 0.75rem;
+    font-weight: 600;
+    color: var(--muted);
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    margin-bottom: 0.5rem;
+  }
+  .form-input {
+    width: 100%;
+    background: rgba(255,255,255,0.04);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 0.75rem 1rem;
+    color: var(--text);
+    font-family: inherit;
+    font-size: 0.9rem;
+    outline: none;
+    transition: border-color 0.2s, box-shadow 0.2s;
+  }
+  .form-input:focus {
+    border-color: rgba(201,162,39,0.5);
+    box-shadow: 0 0 0 3px rgba(201,162,39,0.1);
+  }
+  .form-input::placeholder { color: rgba(255,255,255,0.2); }
+
+  /* password wrapper */
+  .pw-wrap { position: relative; }
+  .pw-toggle {
+    position: absolute;
+    right: 0.9rem; top: 50%;
+    transform: translateY(-50%);
+    background: none; border: none;
+    color: var(--muted); cursor: pointer;
+    font-size: 1rem; padding: 0.2rem;
+    transition: color 0.2s;
+  }
+  .pw-toggle:hover { color: var(--gold); }
+
+  /* ── submit btn ── */
+  .login-btn {
+    width: 100%;
+    padding: 0.85rem;
+    background: linear-gradient(135deg, var(--gold), var(--gold-lt));
+    color: #0a0c14;
+    border: none;
+    border-radius: 10px;
+    font-family: inherit;
+    font-size: 0.92rem;
+    font-weight: 700;
+    cursor: pointer;
+    transition: opacity 0.2s, transform 0.15s, box-shadow 0.2s;
+    margin-top: 0.4rem;
+    position: relative;
+  }
+  .login-btn:hover:not(:disabled) {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 24px rgba(201,162,39,0.4);
+  }
+  .login-btn:active:not(:disabled) { transform: translateY(0); }
+  .login-btn:disabled { opacity: 0.5; cursor: not-allowed; }
+
+  /* loading spinner inside btn */
+  .btn-spinner {
+    display: none;
+    width: 16px; height: 16px;
+    border: 2px solid rgba(10,12,20,0.3);
+    border-top-color: #0a0c14;
+    border-radius: 50%;
+    animation: spin 0.6s linear infinite;
+    margin: 0 auto;
+  }
+  @keyframes spin { to { transform: rotate(360deg); } }
+
+  /* ── error message ── */
+  .error-msg {
+    display: none;
+    background: rgba(230,57,70,0.1);
+    border: 1px solid rgba(230,57,70,0.3);
+    border-radius: 8px;
+    padding: 0.75rem 1rem;
+    font-size: 0.82rem;
+    color: var(--red);
+    margin-bottom: 1.2rem;
+    text-align: center;
+  }
+  .error-msg.show { display: block; }
+
+  /* ── back link ── */
+  .back-link {
+    display: block;
+    text-align: center;
+    margin-top: 1.5rem;
+    font-size: 0.78rem;
+    color: var(--muted);
+    text-decoration: none;
+    transition: color 0.2s;
+  }
+  .back-link:hover { color: var(--gold); }
+
+  /* ── divider ── */
+  .divider {
+    border: none;
+    border-top: 1px solid var(--border);
+    margin: 1.5rem 0;
+  }
+
+  /* ── hint ── */
+  .login-hint {
+    text-align: center;
+    font-size: 0.72rem;
+    color: rgba(255,255,255,0.18);
+    font-family: 'DM Mono', monospace;
+  }
+</style>
+</head>
+<body>
+
+<div class="login-card">
+
+  <div class="login-logo">
+    <div class="logo-icon">🚦</div>
+    <div class="logo-text">
+      <strong>DISHUB</strong>
+      <span>Bidang Lalu Lintas Jalan</span>
+    </div>
+  </div>
+
+  <div class="login-title">Dashboard Admin</div>
+  <div class="login-subtitle">Masuk untuk mengelola data dan laporan</div>
+
+  <div class="error-msg" id="errorMsg">⚠️ <span id="errorText">Password salah. Coba lagi.</span></div>
+
+  <form id="loginForm" onsubmit="doLogin(event)">
+    <div class="form-group">
+      <label class="form-label" for="pwInput">Password</label>
+      <div class="pw-wrap">
+        <input
+          type="password"
+          id="pwInput"
+          class="form-input"
+          placeholder="Masukkan password admin"
+          autocomplete="current-password"
+          required
+        >
+        <button type="button" class="pw-toggle" onclick="togglePw()" id="pwToggle" title="Tampilkan/sembunyikan">👁</button>
+      </div>
+    </div>
+
+    <button type="submit" class="login-btn" id="loginBtn">
+      <span id="btnText">🔐 Masuk ke Dashboard</span>
+      <div class="btn-spinner" id="btnSpinner"></div>
+    </button>
+  </form>
+
+  <hr class="divider">
+  <div class="login-hint">admin • dishub portal v1.0</div>
+
+  <a href="index.html" class="back-link">← Kembali ke Portal Publik</a>
+</div>
+
+<script>
+  // Jika sudah login, langsung ke admin
+  if (sessionStorage.getItem('dishub_admin_logged') === '1') {
+    window.location.replace('dishub-admin.html');
+  }
+
+  function togglePw() {
+    const inp = document.getElementById('pwInput');
+    const btn = document.getElementById('pwToggle');
+    if (inp.type === 'password') { inp.type = 'text'; btn.textContent = '🙈'; }
+    else                         { inp.type = 'password'; btn.textContent = '👁'; }
+  }
+
+  async function doLogin(e) {
+    e.preventDefault();
+    const password = document.getElementById('pwInput').value;
+    const errEl    = document.getElementById('errorMsg');
+    const btn      = document.getElementById('loginBtn');
+    const btnText  = document.getElementById('btnText');
+    const spinner  = document.getElementById('btnSpinner');
+
+    errEl.classList.remove('show');
+    btn.disabled    = true;
+    btnText.style.display  = 'none';
+    spinner.style.display  = 'block';
+
+    try {
+      const res = await fetch('/api/login', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ password }),
+      });
+      const data = await res.json();
+
+      if (data.ok) {
+        sessionStorage.setItem('dishub_admin_logged', '1');
+        window.location.replace('dishub-admin.html');
+      } else {
+        showError(data.error || 'Password salah. Coba lagi.');
+      }
+    } catch(err) {
+      showError('Tidak dapat terhubung ke server. Pastikan server berjalan.');
+    }
+  }
+
+  function showError(msg) {
+    const errEl   = document.getElementById('errorMsg');
+    const errText = document.getElementById('errorText');
+    const btn     = document.getElementById('loginBtn');
+    const btnText = document.getElementById('btnText');
+    const spinner = document.getElementById('btnSpinner');
+
+    errText.textContent = msg;
+    errEl.classList.add('show');
+    btn.disabled           = false;
+    btnText.style.display  = '';
+    spinner.style.display  = 'none';
+
+    // shake input
+    const inp = document.getElementById('pwInput');
+    inp.style.borderColor = 'rgba(230,57,70,0.6)';
+    inp.style.boxShadow   = '0 0 0 3px rgba(230,57,70,0.15)';
+    setTimeout(() => { inp.style.borderColor = ''; inp.style.boxShadow = ''; }, 2000);
+  }
+
+  // Enter key sudah ditangani oleh form onsubmit
+  document.getElementById('pwInput').focus();
+</script>
+</body>
+</html>
