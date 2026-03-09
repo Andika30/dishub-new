@@ -1,0 +1,38 @@
+[
+  {
+    "id": "S001",
+    "icon": "🚦",
+    "title": "Manajemen Rekayasa Lalu Lintas",
+    "desc": "Pengelolaan sistem sinyal, rambu, dan rekayasa jalan."
+  },
+  {
+    "id": "S002",
+    "icon": "🚐",
+    "title": "Perizinan Angkutan Orang",
+    "desc": "Layanan izin trayek dan operasional angkutan umum."
+  },
+  {
+    "id": "S003",
+    "icon": "🚛",
+    "title": "Perizinan Angkutan Barang",
+    "desc": "Pengaturan dan pengawasan angkutan barang logistik."
+  },
+  {
+    "id": "S004",
+    "icon": "🅿️",
+    "title": "Pengelolaan Parkir",
+    "desc": "Manajemen area parkir dan retribusi daerah."
+  },
+  {
+    "id": "S005",
+    "icon": "🛑",
+    "title": "Fasilitas Keselamatan",
+    "desc": "Penyediaan perlengkapan keselamatan lalu lintas."
+  },
+  {
+    "id": "S006",
+    "icon": "🏗️",
+    "title": "Rekomendasi Andalalin",
+    "desc": "Analisis dampak lalu lintas untuk pembangunan."
+  }
+]

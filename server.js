@@ -109,11 +109,51 @@ const DEF_FILES = [
   { id:'FL009', nama:'Formulir Izin Penggunaan Jalan',          kategori:'Izin Jalan',      tipe:'PDF',  ukuran:'165 KB', icon:'📄', url:'' },
 ];
 
+const DEF_SERVICES = [
+  { id: 'S001', icon: '🚦', title: 'Manajemen Rekayasa Lalu Lintas', desc: 'Pengelolaan sistem sinyal, rambu, dan rekayasa jalan.' },
+  { id: 'S002', icon: '🚐', title: 'Perizinan Angkutan Orang',     desc: 'Layanan izin trayek dan operasional angkutan umum.' },
+  { id: 'S003', icon: '🚛', title: 'Perizinan Angkutan Barang',    desc: 'Pengaturan dan pengawasan angkutan barang logistik.' },
+  { id: 'S004', icon: '🅿️', title: 'Pengelolaan Parkir',         desc: 'Manajemen area parkir dan retribusi daerah.' },
+  { id: 'S005', icon: '🛑', title: 'Fasilitas Keselamatan',      desc: 'Penyediaan perlengkapan keselamatan lalu lintas.' },
+  { id: 'S006', icon: '🏗️', title: 'Rekomendasi Andalalin',     desc: 'Analisis dampak lalu lintas untuk pembangunan.' },
+];
+
+const DEF_FAQ = [
+  { id: 'F001', q: 'Bagaimana cara mengajukan pengaduan?', a: 'Anda dapat mengisi formulir pengaduan online di menu "Pengaduan" atau menghubungi WhatsApp resmi kami.' },
+  { id: 'F002', q: 'Berapa lama proses respons pengaduan?', a: 'Kami berkomitmen untuk memberikan respons awal dalam waktu maksimal 3 hari kerja.' },
+  { id: 'F003', q: 'Apakah pengajuan izin dipungut biaya?', a: 'Biaya perizinan disesuaikan dengan Peraturan Daerah yang berlaku. Detail tarif dapat dilihat di menu Layanan.' },
+  { id: 'F004', q: 'Di mana lokasi kantor Dinas Perhubungan?', a: 'Kantor kami berlokasi di Jl. Raya Sudirman No. 123. Jam pelayanan Senin-Jumat 08:00 - 16:00.' },
+  { id: 'F005', q: 'Bagaimana cara mengecek status perizinan?', a: 'Status perizinan akan diinformasikan melalui email atau nomor telepon yang Anda daftarkan.' },
+];
+
+const DEF_ALUR = [
+  { id: 'A001', num: '1', title: 'Pendaftaran', desc: 'Isi formulir online atau datang ke loket.' },
+  { id: 'A002', num: '2', title: 'Verifikasi',  desc: 'Petugas memeriksa kelengkapan dokumen.' },
+  { id: 'A003', num: '3', title: 'Pembayaran',  desc: 'Bayar retribusi jika diperlukan.' },
+  { id: 'A004', num: '4', title: 'Proses Teknis', desc: 'Survei lapangan atau kajian teknis.' },
+  { id: 'A005', num: '5', title: 'Selesai',     desc: 'Dokumen izin diterbitkan.' },
+];
+
+const DEF_BIDANG = [
+  { id: 'B001', icon: '🚦', title: 'MRLL', desc: 'Manajemen Rekayasa Lalin.' },
+  { id: 'B002', icon: '🚌', title: 'Angkutan', desc: 'Bidang Angkutan Umum.' },
+  { id: 'B003', icon: '👷', title: 'Prasarana', desc: 'Fasilitas Jalan.' },
+];
+
 const DEF_SETTINGS = {
+  nama_aplikasi:'DISHUB Portal', app_icon:'🚦',
+  logo_url:'', footer_text:'© 2026 Dinas Perhubungan. Hak Cipta Dilindungi.',
   nama_instansi:'Dinas Perhubungan', bidang:'Bidang Lalu Lintas Jalan',
   alamat:'Jl. Raya Sudirman No. 123, Kota', telepon:'(021) 555-0100',
   email:'info@dishub.go.id', wa:'6281234567890',
   jam_senin_jumat:'08:00 – 16:00', jam_sabtu:'08:00 – 12:00',
+  hero_title: 'Informasi & Akses Pelayanan Lalu Lintas Mudah, Cepat & Transparan',
+  hero_tagline: 'Portal resmi layanan bidang lalu lintas jalan. Kami hadir untuk memberikan akses informasi, perizinan, dan pelayanan publik yang efisien, akuntabel, dan berorientasi pada kepuasan masyarakat.',
+  hero_stat1_val: '24/7', hero_stat1_lab: 'Informasi Online',
+  hero_stat2_val: '12+',  hero_stat2_lab: 'Jenis Layanan',
+  hero_stat3_val: '3 Hari', hero_stat3_lab: 'Respons Pengaduan',
+  visi: 'Terwujudnya sistem lalu lintas jalan yang aman, tertib, lancar, dan berwawasan lingkungan guna mendukung pembangunan daerah yang berkelanjutan.',
+  misi: 'Meningkatkan keselamatan dan ketertiban lalu lintas jalan\nMewujudkan pelayanan perizinan yang transparan dan akuntabel\nMengembangkan infrastruktur manajemen lalu lintas berbasis teknologi\nMeningkatkan kualitas SDM di bidang lalu lintas jalan\nMendorong partisipasi masyarakat dalam pengelolaan lalu lintas',
   admin_password:'admin123',
 };
 
@@ -124,6 +164,7 @@ const DEF_USERS = [
 const DEFAULTS = {
   pengaduan: DEF_PENGADUAN, rekayasa: DEF_REKAYASA, pengumuman: DEF_PENGUMUMAN,
   files: DEF_FILES, users: DEF_USERS,
+  services: DEF_SERVICES, faq: DEF_FAQ, alur: DEF_ALUR, bidang: DEF_BIDANG,
 };
 
 // ─── Seed lokal ───────────────────────────────────────────────────────────────
@@ -136,7 +177,7 @@ if (!USE_REDIS) {
 }
 
 // ─── API: Array Resources ─────────────────────────────────────────────────────
-const ARR_RESOURCES = ['pengaduan', 'rekayasa', 'pengumuman', 'files', 'users'];
+const ARR_RESOURCES = ['pengaduan', 'rekayasa', 'pengumuman', 'files', 'users', 'services', 'faq', 'alur', 'bidang'];
 
 ARR_RESOURCES.forEach(res => {
   const def = DEFAULTS[res];

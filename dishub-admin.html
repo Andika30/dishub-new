@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Admin Dashboard — Manajemen Pengaduan DISHUB</title>
+<title id="adminTabTitle">Admin Dashboard — DISHUB</title>
 <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600;700&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
 <style>
   :root {
@@ -111,6 +111,20 @@
   .export-btn { margin-left:auto; background:rgba(57,208,216,0.12); border:1px solid rgba(57,208,216,0.25); color:var(--teal); padding:0.5rem 1rem; border-radius:8px; font-size:0.78rem; font-weight:600; cursor:pointer; transition:all 0.2s; }
   .export-btn:hover { background:var(--teal); color:#0d1117; }
 
+  .tab-btn {
+    background: rgba(255,255,255,0.04); border: 1px solid var(--border);
+    color: var(--muted); padding: 0.65rem 1.2rem; border-radius: 12px;
+    font-size: 0.82rem; font-weight: 600; cursor: pointer; transition: all 0.2s;
+    display: inline-flex; align-items: center; gap: 8px;
+  }
+  .tab-btn.active {
+    background: rgba(212,160,23,0.12); border-color: var(--gold); color: var(--gold);
+    box-shadow: 0 4px 15px rgba(212,160,23,0.1);
+  }
+  .tab-btn:hover:not(.active) {
+    background: rgba(255,255,255,0.08); color: var(--text); transform: translateY(-1px);
+  }
+
   /* TABLE */
   .table-card { background:var(--card); border:1px solid var(--border); border-radius:14px; overflow:hidden; }
   .table-header { padding:1rem 1.4rem; border-bottom:1px solid var(--border); display:flex; align-items:center; justify-content:space-between; }
@@ -152,35 +166,35 @@
 
   /* MODAL */
   .modal-overlay {
-    position:fixed;inset:0;background:rgba(0,0,0,0.7);backdrop-filter:blur(4px);
+    position:fixed;inset:0;background:rgba(0,0,0,0.8);backdrop-filter:blur(8px);
     z-index:999;display:flex;align-items:center;justify-content:center;padding:1rem;
-    opacity:0;pointer-events:none;transition:all 0.3s ease;
+    opacity:0;pointer-events:none;transition:all 0.35s cubic-bezier(0.4, 0, 0.2, 1);
   }
   .modal-overlay.open { opacity:1; pointer-events:all; }
   .modal {
-    background:var(--card);border:1px solid var(--border);border-radius:18px;
-    width:100%;max-width:640px;max-height:90vh;overflow-y:auto;
-    transform:scale(0.95);transition:all 0.3s ease;
+    background:var(--card);border:1px solid var(--border);border-radius:24px;
+    width:100%;max-width:580px;max-height:90vh;overflow-y:auto;
+    transform:scale(0.9) translateY(20px);transition:all 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+    box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
   }
-  .modal-overlay.open .modal { transform:scale(1); }
+  .modal-overlay.open .modal { transform:scale(1) translateY(0); }
   .modal-header { padding:1.4rem 1.6rem; border-bottom:1px solid var(--border); display:flex;align-items:center;justify-content:space-between; }
   .modal-title { font-size:1rem;font-weight:700; }
   .modal-close { width:28px;height:28px;border-radius:6px;background:rgba(255,255,255,0.06);border:none;color:var(--muted);cursor:pointer;font-size:1rem;transition:all 0.2s; }
   .modal-close:hover { background:var(--red);color:white; }
   .modal-body { padding:1.6rem; }
   .detail-grid { display:grid;grid-template-columns:1fr 1fr;gap:1rem;margin-bottom:1.4rem; }
-  .detail-field { }
   .detail-label { font-size:0.68rem;color:var(--muted);font-weight:600;letter-spacing:0.06em;text-transform:uppercase;margin-bottom:0.3rem; }
   .detail-value { font-size:0.85rem;font-weight:500; }
   .detail-value a { color:var(--teal);text-decoration:none; }
   .detail-full { grid-column:1/-1; }
   .modal-aduan { background:var(--bg);border:1px solid var(--border);border-radius:10px;padding:1rem;font-size:0.82rem;color:var(--muted);line-height:1.7; }
   .modal-actions { display:flex;gap:0.8rem;margin-top:1.4rem;flex-wrap:wrap; }
-  .modal-btn { flex:1;padding:0.75rem;border-radius:10px;font-size:0.82rem;font-weight:700;cursor:pointer;border:none;transition:all 0.2s;min-width:120px; }
+  .modal-btn { flex:1;padding:0.85rem;border-radius:12px;font-size:0.85rem;font-weight:700;cursor:pointer;border:none;transition:all 0.2s;min-width:120px; }
   .mb-process { background:linear-gradient(135deg,var(--orange),#f0c040);color:#0d1117; }
-  .mb-done { background:linear-gradient(135deg,var(--green),#56d364);color:#0d1117; }
-  .mb-reject { background:rgba(248,81,73,0.12);border:1px solid rgba(248,81,73,0.3);color:var(--red); }
-  .mb-reject:hover { background:var(--red);color:white; }
+  .mb-done { background:linear-gradient(135deg,var(--gold),var(--gold-l));color:#0d1117; }
+  .mb-reject { background:rgba(255,255,255,0.06);border:1px solid var(--border);color:var(--muted); }
+  .mb-reject:hover { background:var(--red);color:white; border-color:var(--red); }
   .modal-btn:hover { transform:translateY(-2px); }
   .response-area { width:100%;background:var(--bg);border:1px solid var(--border);border-radius:10px;padding:0.9rem;color:var(--text);font-family:var(--font);font-size:0.82rem;resize:vertical;min-height:80px;outline:none;margin-top:1rem; }
   .response-area:focus { border-color:var(--gold); }
@@ -215,13 +229,13 @@
   .form-grid-2 { display:grid; grid-template-columns:1fr 1fr; gap:1rem; }
   .form-grid-3 { display:grid; grid-template-columns:1fr 1fr 1fr; gap:1rem; }
   .form-field { display:flex; flex-direction:column; gap:0.4rem; }
-  .form-field label { font-size:0.68rem; color:var(--muted); font-weight:700; text-transform:uppercase; letter-spacing:0.08em; }
+  .form-field label { font-size:0.7rem; color:var(--muted); font-weight:700; text-transform:uppercase; letter-spacing:0.1em; margin-bottom:0.2rem; display:block; }
   .form-field input, .form-field select, .form-field textarea {
-    background:var(--bg); border:1px solid var(--border); border-radius:8px;
-    padding:0.55rem 0.85rem; color:var(--text); font-family:var(--font); font-size:0.82rem; outline:none;
+    background:var(--bg); border:1px solid var(--border); border-radius:10px;
+    padding:0.7rem 1rem; color:var(--text); font-family:var(--font); font-size:0.85rem; outline:none;
     transition:all 0.2s;
   }
-  .form-field input:focus, .form-field select:focus, .form-field textarea:focus { border-color:var(--gold); }
+  .form-field input:focus, .form-field select:focus, .form-field textarea:focus { border-color:var(--gold); background:rgba(212,160,23,0.04); }
   .form-field textarea { resize:vertical; min-height:70px; }
   .form-field select option { background:var(--card); }
   .form-field-full { grid-column:1/-1; }
@@ -281,6 +295,17 @@
     .report-grid { grid-template-columns:repeat(2,1fr); }
     .export-options { grid-template-columns:1fr; }
   }
+
+  /* SUB PANEL ANIMATION */
+  .beranda-sub-panel { display: none; }
+  .beranda-sub-panel.active { 
+    display: block; 
+    animation: fadeInSub 0.4s cubic-bezier(0.4, 0, 0.2, 1); 
+  }
+  @keyframes fadeInSub {
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
 </style>
 </head>
 <body>
@@ -288,10 +313,10 @@
 <!-- SIDEBAR -->
 <aside class="sidebar" id="sidebar">
   <div class="sidebar-logo">
-    <div class="logo-icon">🚦</div>
+    <div class="logo-icon" id="sidebarIcon">🚦</div>
     <div>
-      <div class="logo-text">DISHUB Admin</div>
-      <div class="logo-sub">Manajemen Pengaduan</div>
+      <div class="logo-text" id="sidebarAppName">DISHUB Admin</div>
+      <div class="logo-sub" id="sidebarAppSub">Manajemen Pengaduan</div>
     </div>
   </div>
   <div class="nav-section">
@@ -306,6 +331,7 @@
     <div class="nav-label">Informasi</div>
     <div class="nav-item" onclick="setNav(this,'rekayasa')">🚧 Rekayasa Lalin</div>
     <div class="nav-item" onclick="setNav(this,'pengumuman')">📢 Pengumuman</div>
+    <div class="nav-item" onclick="setNav(this,'konten-beranda')">🏠 Konten Beranda</div>
     <div class="nav-item" onclick="setNav(this,'downloads')">📥 Download Manager</div>
   </div>
   <div class="nav-section">
@@ -609,7 +635,89 @@
       </div>
     </div>
 
-    <!-- ===== PANEL: PENGGUNA ===== -->
+    <!-- ===== PANEL: KONTEN BERANDA ===== -->
+    <div id="panel-konten-beranda" class="panel">
+      <div class="filter-bar">
+        <button class="tab-btn active" onclick="setBerandaSubTab(this, 'beranda-hero')">🚀 Hero & Profil</button>
+        <button class="tab-btn" onclick="setBerandaSubTab(this, 'beranda-layanan')">⚙️ Layanan</button>
+        <button class="tab-btn" onclick="setBerandaSubTab(this, 'beranda-alur')">🔄 Alur Pelayanan</button>
+        <button class="tab-btn" onclick="setBerandaSubTab(this, 'beranda-faq')">❓ FAQ</button>
+        <button class="tab-btn" onclick="setBerandaSubTab(this, 'beranda-bidang')">🏢 Profil Bidang</button>
+      </div>
+
+      <!-- Sub: Hero & Profil -->
+      <div id="sub-beranda-hero" class="beranda-sub-panel active">
+        <div class="setting-section">
+          <div class="setting-title">🚀 Konten Hero</div>
+          <div class="form-grid-2">
+            <div class="form-field form-field-full">
+              <label>Judul Hero (HTML support)</label>
+              <textarea id="set-hero-title" rows="2"></textarea>
+            </div>
+            <div class="form-field form-field-full">
+              <label>Tagline Hero</label>
+              <textarea id="set-hero-tagline" rows="2"></textarea>
+            </div>
+            <div class="form-field"><label>Stat 1 Val</label><input type="text" id="set-hero-s1v"></div>
+            <div class="form-field"><label>Stat 1 Label</label><input type="text" id="set-hero-s1l"></div>
+            <div class="form-field"><label>Stat 2 Val</label><input type="text" id="set-hero-s2v"></div>
+            <div class="form-field"><label>Stat 2 Label</label><input type="text" id="set-hero-s2l"></div>
+            <div class="form-field"><label>Stat 3 Val</label><input type="text" id="set-hero-s3v"></div>
+            <div class="form-field"><label>Stat 3 Label</label><input type="text" id="set-hero-s3l"></div>
+          </div>
+        </div>
+        <div class="setting-section">
+          <div class="setting-title">🏛️ Visi & Misi</div>
+          <div class="form-field">
+            <label>Visi</label>
+            <textarea id="set-visi" rows="2"></textarea>
+          </div>
+          <div class="form-field" style="margin-top:1rem;">
+            <label>Misi (Satu per baris)</label>
+            <textarea id="set-misi" rows="5"></textarea>
+          </div>
+        </div>
+        <div class="form-actions"><button class="btn-save" onclick="saveBerandaSettings()">Simpan Perubahan</button></div>
+      </div>
+
+      <!-- Sub: List Managers -->
+      <div id="sub-beranda-layanan" class="beranda-sub-panel">
+        <div class="table-card">
+          <div class="table-header">
+            <div class="table-title">Daftar Layanan</div>
+            <button class="btn-save" onclick="openHomeItemModal('services')">+ Tambah Layanan</button>
+          </div>
+          <div id="list-services" class="content-list-wrap"></div>
+        </div>
+      </div>
+      <div id="sub-beranda-alur" class="beranda-sub-panel">
+        <div class="table-card">
+          <div class="table-header">
+            <div class="table-title">Alur Pelayanan</div>
+            <button class="btn-save" onclick="openHomeItemModal('alur')">+ Tambah Alur</button>
+          </div>
+          <div id="list-alur" class="content-list-wrap"></div>
+        </div>
+      </div>
+      <div id="sub-beranda-faq" class="beranda-sub-panel">
+        <div class="table-card">
+          <div class="table-header">
+            <div class="table-title">FAQ</div>
+            <button class="btn-save" onclick="openHomeItemModal('faq')">+ Tambah FAQ</button>
+          </div>
+          <div id="list-faq" class="content-list-wrap"></div>
+        </div>
+      </div>
+      <div id="sub-beranda-bidang" class="beranda-sub-panel">
+        <div class="table-card">
+          <div class="table-header">
+            <div class="table-title">Profil Bidang</div>
+            <button class="btn-save" onclick="openHomeItemModal('bidang')">+ Tambah Bidang</button>
+          </div>
+          <div id="list-bidang" class="content-list-wrap"></div>
+        </div>
+      </div>
+    </div>
     <div id="panel-pengguna" class="panel">
       <div class="crud-section">
         <div class="crud-section-title">➕ Tambah Pengguna Admin</div>
@@ -684,6 +792,32 @@
 
     <!-- ===== PANEL: PENGATURAN ===== -->
     <div id="panel-pengaturan" class="panel">
+      <div class="setting-section">
+        <div class="setting-title">⚙️ Pengaturan Aplikasi</div>
+        <div class="form-grid-2">
+          <div class="form-field">
+            <label>Nama Aplikasi</label>
+            <input type="text" id="set-app-name" placeholder="DISHUB Portal">
+          </div>
+          <div class="form-field">
+            <label>Icon Aplikasi (Emoji)</label>
+            <input type="text" id="set-app-icon" placeholder="🚦">
+          </div>
+          <div class="form-field">
+            <label>Logo Aplikasi (Upload)</label>
+            <input type="file" id="set-logo-file" accept="image/*" onchange="handleLogoUpload(event)">
+            <input type="hidden" id="set-logo-url">
+            <div id="logo-preview-wrap" style="margin-top:10px; display:none; align-items:center; gap:10px;">
+              <img id="logo-preview" src="" style="height:40px; width:40px; object-fit:contain; background:#fff; padding:2px; border-radius:4px; border:1px solid var(--border);">
+              <button onclick="removeLogo()" style="font-size:11px; color:var(--red); background:rgba(230,57,70,0.1); border:1px solid rgba(230,57,70,0.2); cursor:pointer; padding:4px 8px; border-radius:4px;">Hapus</button>
+            </div>
+          </div>
+          <div class="form-field">
+            <label>Teks Footer</label>
+            <input type="text" id="set-footer-text" placeholder="© 2026 ...">
+          </div>
+        </div>
+      </div>
       <div class="setting-section">
         <div class="setting-title">🏛️ Informasi Instansi</div>
         <div class="form-grid-2">
@@ -775,7 +909,7 @@
 <!-- LOADING OVERLAY -->
 <div id="loadingOverlay" style="position:fixed;inset:0;background:rgba(10,12,20,0.93);display:flex;align-items:center;justify-content:center;z-index:9999;">
   <div style="text-align:center;color:#fff;">
-    <div style="font-size:2.5rem;margin-bottom:1rem;">🚦</div>
+    <div style="font-size:2.5rem;margin-bottom:1rem;" id="loadingIcon">🚦</div>
     <div style="font-size:1.1rem;font-weight:600;color:#e0e0e0;">Memuat Data...</div>
     <div style="font-size:0.8rem;color:#888;margin-top:0.4rem;">Menghubungkan ke server</div>
   </div>
@@ -919,8 +1053,20 @@ function openModal(d) {
   document.getElementById('modalOverlay').classList.add('open');
 }
 
-function closeModal(e) { if (e.target===document.getElementById('modalOverlay')) closeModalDirect(); }
-function closeModalDirect() { document.getElementById('modalOverlay').classList.remove('open'); }
+function closeModal(idOrEvent) {
+  if (typeof idOrEvent === 'string') {
+    const el = document.getElementById(idOrEvent);
+    if (el) el.classList.remove('open');
+  } else if (idOrEvent && idOrEvent.target) {
+    if (idOrEvent.target.classList.contains('modal-overlay')) {
+      idOrEvent.target.classList.remove('open');
+    }
+  }
+}
+function closeModalDirect(id = 'modalOverlay') {
+  const el = document.getElementById(id);
+  if (el) el.classList.remove('open');
+}
 
 async function setStatus(id, newStatus) {
   const catatan = document.getElementById('responseText')?.value || '';
@@ -956,11 +1102,45 @@ function updateStats() {
   document.getElementById('newBadge').textContent   = allData.filter(d=>d.status==='Baru').length;
 }
 
+function applySettingsToUI() {
+  const s = settingsData;
+  if (!s) return;
+  const appName = s.nama_aplikasi || 'DISHUB Portal';
+  const appIcon = s.app_icon || '🚦';
+  
+  if (document.getElementById('adminTabTitle')) document.getElementById('adminTabTitle').textContent = `Admin Dashboard — ${appName}`;
+  
+  const iconEl = document.getElementById('sidebarIcon');
+  if (iconEl) {
+    if (s.logo_url) {
+      iconEl.innerHTML = `<img src="${s.logo_url}" style="width:28px; height:28px; object-fit:contain;">`;
+    } else {
+      iconEl.textContent = appIcon;
+    }
+  }
+
+  if (document.getElementById('sidebarAppName'))  document.getElementById('sidebarAppName').textContent = appName + ' Admin';
+  if (document.getElementById('sidebarAppSub'))   document.getElementById('sidebarAppSub').textContent = s.bidang || 'Manajemen Pengaduan';
+  
+  const loadIconEl = document.getElementById('loadingIcon');
+  if (loadIconEl) {
+    if (s.logo_url) {
+      loadIconEl.innerHTML = `<img src="${s.logo_url}" style="width:48px; height:48px; object-fit:contain;">`;
+    } else {
+      loadIconEl.textContent = appIcon;
+    }
+  }
+  
+  const sn = s.nama_instansi;
+  if (sn && document.getElementById('adminNameDisplay')) document.getElementById('adminNameDisplay').textContent = 'Admin ' + sn;
+}
+
 // =================== NAV ===================
 const NAV_TITLES = {
   dashboard:'Dashboard', pengaduan:'Semua Pengaduan', rekayasa:'Rekayasa Lalu Lintas',
   pengumuman:'Pengumuman', downloads:'Download Manager', pengguna:'Pengguna',
   laporan:'Laporan & Ekspor', pengaturan:'Pengaturan',
+  'konten-beranda':'Manajemen Konten Beranda',
 };
 
 function setNav(el, panelId, statusFilter) {
@@ -984,6 +1164,7 @@ function setNav(el, panelId, statusFilter) {
   if (panelId === 'pengguna')   renderPenggunaPanel();
   if (panelId === 'laporan')    renderLaporanPanel();
   if (panelId === 'pengaturan') renderPengaturanPanel();
+  if (panelId === 'konten-beranda') renderKontenBerandaPanel();
 }
 
 // =================== CHARTS ===================
@@ -1327,6 +1508,174 @@ async function deleteUser(id) {
   showToast('🗑️ Pengguna berhasil dihapus', 'var(--orange)');
 }
 
+// =================== KONTEN BERANDA PANEL ===================
+let servicesData=[], faqData=[], alurData=[], bidangData=[];
+
+function setBerandaSubTab(btn, subId) {
+  const panel = btn.closest('.panel');
+  if (!panel) return;
+  panel.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  document.querySelectorAll('.beranda-sub-panel').forEach(p => {
+    p.classList.remove('active');
+    p.style.display = ''; // Clear inline display if any
+  });
+  const target = document.getElementById('sub-' + subId);
+  if (target) target.classList.add('active');
+}
+
+function renderKontenBerandaPanel() {
+  const s = settingsData;
+  document.getElementById('set-hero-title').value   = s.hero_title || '';
+  document.getElementById('set-hero-tagline').value = s.hero_tagline || '';
+  document.getElementById('set-hero-s1v').value     = s.hero_stat1_val || '';
+  document.getElementById('set-hero-s1l').value     = s.hero_stat1_lab || '';
+  document.getElementById('set-hero-s2v').value     = s.hero_stat2_val || '';
+  document.getElementById('set-hero-s2l').value     = s.hero_stat2_lab || '';
+  document.getElementById('set-hero-s3v').value     = s.hero_stat3_val || '';
+  document.getElementById('set-hero-s3l').value     = s.hero_stat3_lab || '';
+  document.getElementById('set-visi').value         = s.visi || '';
+  document.getElementById('set-misi').value         = s.misi || '';
+
+  renderHomeList('services', servicesData);
+  renderHomeList('faq', faqData);
+  renderHomeList('alur', alurData);
+  renderHomeList('bidang', bidangData);
+}
+
+async function saveBerandaSettings() {
+  const s = settingsData;
+  s.hero_title     = document.getElementById('set-hero-title').value;
+  s.hero_tagline   = document.getElementById('set-hero-tagline').value;
+  s.hero_stat1_val = document.getElementById('set-hero-s1v').value;
+  s.hero_stat1_lab = document.getElementById('set-hero-s1l').value;
+  s.hero_stat2_val = document.getElementById('set-hero-s2v').value;
+  s.hero_stat2_lab = document.getElementById('set-hero-s2l').value;
+  s.hero_stat3_val = document.getElementById('set-hero-s3v').value;
+  s.hero_stat3_lab = document.getElementById('set-hero-s3l').value;
+  s.visi           = document.getElementById('set-visi').value;
+  s.misi           = document.getElementById('set-misi').value;
+  await saveSettings();
+  showToast('✅ Konten Beranda berhasil disimpan', 'var(--green)');
+}
+
+function renderHomeList(type, data) {
+  const wrap = document.getElementById('list-' + type);
+  if (!wrap) return;
+  if (!data.length) { wrap.innerHTML = '<div class="list-empty">Belum ada data.</div>'; return; }
+  
+  wrap.innerHTML = data.map(item => {
+    let title = '', desc = '';
+    if (type === 'faq')      { title = item.q; desc = item.a; }
+    else if (type === 'alur') { title = `Step ${item.num}: ${item.title}`; desc = item.desc; }
+    else                    { title = `${item.icon || ''} ${item.title}`; desc = item.desc; }
+
+    return `
+      <div class="list-item">
+        <div class="list-item-main">
+          <div class="list-item-title">${title}</div>
+          <div class="list-item-desc">${desc}</div>
+        </div>
+        <div class="list-item-actions">
+          <button class="btn-edit" onclick="openHomeItemModal('${type}', '${item.id}')">Edit</button>
+          <button class="btn-danger" onclick="deleteHomeItem('${type}', '${item.id}')">Hapus</button>
+        </div>
+      </div>`;
+  }).join('');
+}
+
+function openHomeItemModal(type, id) {
+  document.getElementById('home-item-type').value = type;
+  document.getElementById('home-item-id').value = id || '';
+  document.querySelectorAll('.home-item-form').forEach(f => f.style.display = 'none');
+  
+  const titleEl = document.getElementById('homeItemModalTitle');
+  const item = id ? (type==='services' ? servicesData : type==='faq' ? faqData : type==='alur' ? alurData : bidangData).find(i => i.id === id) : null;
+  
+  if (type === 'services') {
+    titleEl.innerHTML = `<span>⚙️</span> ${id ? 'Edit Layanan' : 'Tambah Layanan'}`;
+    document.getElementById('home-item-form-layanan').style.display = 'block';
+    document.getElementById('hi-s-icon').value = item ? item.icon : '';
+    document.getElementById('hi-s-title').value = item ? item.title : '';
+    document.getElementById('hi-s-desc').value = item ? item.desc : '';
+  } else if (type === 'faq') {
+    titleEl.innerHTML = `<span>❓</span> ${id ? 'Edit FAQ' : 'Tambah FAQ'}`;
+    document.getElementById('home-item-form-faq').style.display = 'block';
+    document.getElementById('hi-f-q').value = item ? item.q : '';
+    document.getElementById('hi-f-a').value = item ? item.a : '';
+  } else if (type === 'alur') {
+    titleEl.innerHTML = `<span>🔄</span> ${id ? 'Edit Alur' : 'Tambah Alur'}`;
+    document.getElementById('home-item-form-alur').style.display = 'block';
+    document.getElementById('hi-a-num').value = item ? item.num : '';
+    document.getElementById('hi-a-title').value = item ? item.title : '';
+    document.getElementById('hi-a-desc').value = item ? item.desc : '';
+  } else if (type === 'bidang') {
+    titleEl.innerHTML = `<span>🏢</span> ${id ? 'Edit Profil Bidang' : 'Tambah Profil Bidang'}`;
+    document.getElementById('home-item-form-bidang').style.display = 'block';
+    document.getElementById('hi-b-icon').value = item ? item.icon : '';
+    document.getElementById('hi-b-title').value = item ? item.title : '';
+    document.getElementById('hi-b-desc').value = item ? item.desc : '';
+  }
+  
+  document.getElementById('modalHomeItem').classList.add('open');
+}
+
+async function saveHomeItem() {
+  const type = document.getElementById('home-item-type').value;
+  const id   = document.getElementById('home-item-id').value;
+  let body = { id: id || (type.charAt(0).toUpperCase() + Date.now()) };
+
+  if (type === 'services') {
+    body.icon = document.getElementById('hi-s-icon').value;
+    body.title = document.getElementById('hi-s-title').value;
+    body.desc = document.getElementById('hi-s-desc').value;
+  } else if (type === 'faq') {
+    body.q = document.getElementById('hi-f-q').value;
+    body.a = document.getElementById('hi-f-a').value;
+  } else if (type === 'alur') {
+    body.num = document.getElementById('hi-a-num').value;
+    body.title = document.getElementById('hi-a-title').value;
+    body.desc = document.getElementById('hi-a-desc').value;
+  } else if (type === 'bidang') {
+    body.icon = document.getElementById('hi-b-icon').value;
+    body.title = document.getElementById('hi-b-title').value;
+    body.desc = document.getElementById('hi-b-desc').value;
+  }
+
+  const endpoint = type === 'services' ? '/api/services' : type === 'faq' ? '/api/faq' : type === 'alur' ? '/api/alur' : '/api/bidang';
+  
+  if (id) {
+    await apiPut(endpoint + '/' + id, body);
+  } else {
+    await apiPost(endpoint, body);
+  }
+
+  // Refresh local data
+  if (type === 'services') servicesData = await apiGet('/api/services');
+  else if (type === 'faq') faqData = await apiGet('/api/faq');
+  else if (type === 'alur') alurData = await apiGet('/api/alur');
+  else if (type === 'bidang') bidangData = await apiGet('/api/bidang');
+
+  renderHomeList(type, type==='services' ? servicesData : type==='faq' ? faqData : type==='alur' ? alurData : bidangData);
+  closeModalDirect('modalHomeItem');
+  showToast('✅ Data berhasil disimpan', 'var(--green)');
+}
+
+async function deleteHomeItem(type, id) {
+  if (!confirm('Yakin ingin menghapus item ini?')) return;
+  const endpoint = type === 'services' ? '/api/services' : type === 'faq' ? '/api/faq' : type === 'alur' ? '/api/alur' : '/api/bidang';
+  await apiDelete(endpoint + '/' + id);
+  
+  // Refresh local data
+  if (type === 'services') servicesData = await apiGet('/api/services');
+  else if (type === 'faq') faqData = await apiGet('/api/faq');
+  else if (type === 'alur') alurData = await apiGet('/api/alur');
+  else if (type === 'bidang') bidangData = await apiGet('/api/bidang');
+
+  renderHomeList(type, type==='services' ? servicesData : type==='faq' ? faqData : type==='alur' ? alurData : bidangData);
+  showToast('🗑️ Item berhasil dihapus', 'var(--orange)');
+}
+
 // =================== LAPORAN PANEL ===================
 function renderLaporanPanel() {
   const total   = allData.length;
@@ -1359,6 +1708,20 @@ function renderLaporanPanel() {
 
 // =================== PENGATURAN PANEL ===================
 function renderPengaturanPanel() {
+  document.getElementById('set-app-name').value  = settingsData.nama_aplikasi||'';
+  document.getElementById('set-app-icon').value  = settingsData.app_icon||'';
+  document.getElementById('set-logo-url').value  = settingsData.logo_url||'';
+  document.getElementById('set-footer-text').value = settingsData.footer_text||'';
+  
+  const previewWrap = document.getElementById('logo-preview-wrap');
+  const previewImg  = document.getElementById('logo-preview');
+  if (settingsData.logo_url) {
+    previewWrap.style.display = 'flex';
+    previewImg.src = settingsData.logo_url;
+  } else {
+    previewWrap.style.display = 'none';
+  }
+
   document.getElementById('set-nama').value      = settingsData.nama_instansi||'';
   document.getElementById('set-bidang').value    = settingsData.bidang||'';
   document.getElementById('set-alamat').value    = settingsData.alamat||'';
@@ -1370,6 +1733,11 @@ function renderPengaturanPanel() {
 }
 
 async function saveSettingsForm() {
+  settingsData.nama_aplikasi   = document.getElementById('set-app-name').value;
+  settingsData.app_icon        = document.getElementById('set-app-icon').value;
+  settingsData.logo_url        = document.getElementById('set-logo-url').value;
+  settingsData.footer_text     = document.getElementById('set-footer-text').value;
+  
   settingsData.nama_instansi   = document.getElementById('set-nama').value;
   settingsData.bidang          = document.getElementById('set-bidang').value;
   settingsData.alamat          = document.getElementById('set-alamat').value;
@@ -1379,7 +1747,34 @@ async function saveSettingsForm() {
   settingsData.jam_senin_jumat = document.getElementById('set-jam-senin').value;
   settingsData.jam_sabtu       = document.getElementById('set-jam-sabtu').value;
   await saveSettings();
+  applySettingsToUI();
   showToast('✅ Pengaturan berhasil disimpan', 'var(--green)');
+}
+
+function handleLogoUpload(event) {
+  const file = event.target.files[0];
+  if (!file) return;
+  
+  if (file.size > 1024 * 1024) { // 1MB limit
+    showToast('⚠️ Ukuran logo maksimal 1MB', 'var(--red)');
+    event.target.value = '';
+    return;
+  }
+
+  const reader = new FileReader();
+  reader.onload = function(e) {
+    const base64 = e.target.result;
+    document.getElementById('set-logo-url').value = base64;
+    document.getElementById('logo-preview').src = base64;
+    document.getElementById('logo-preview-wrap').style.display = 'flex';
+  };
+  reader.readAsDataURL(file);
+}
+
+function removeLogo() {
+  document.getElementById('set-logo-url').value = '';
+  document.getElementById('set-logo-file').value = '';
+  document.getElementById('logo-preview-wrap').style.display = 'none';
 }
 
 async function changePassword() {
@@ -1458,18 +1853,21 @@ async function init() {
   }
   const overlay = document.getElementById('loadingOverlay');
   try {
-    [allData, rekayasaData, pengumumanData, filesData, usersData, settingsData] = await Promise.all([
+    [allData, rekayasaData, pengumumanData, filesData, usersData, settingsData, servicesData, faqData, alurData, bidangData] = await Promise.all([
       apiGet('/api/pengaduan'),
       apiGet('/api/rekayasa'),
       apiGet('/api/pengumuman'),
       apiGet('/api/files'),
       apiGet('/api/users'),
       apiGet('/api/settings'),
+      apiGet('/api/services'),
+      apiGet('/api/faq'),
+      apiGet('/api/alur'),
+      apiGet('/api/bidang'),
     ]);
     filtered = [...allData];
     updateStats(); renderTable(); renderTable2(); renderBarChart(); renderDonutChart();
-    const sn = settingsData.nama_instansi;
-    if (sn) document.getElementById('adminNameDisplay').textContent = 'Admin ' + sn;
+    applySettingsToUI();
     if (overlay) overlay.style.display = 'none';
   } catch(e) {
     if (overlay) overlay.innerHTML = `
@@ -1487,5 +1885,45 @@ async function init() {
 init();
 
 </script>
-</body>
-</html>
+<!-- MODAL: HOME CONTENT ITEM -->
+<div class="modal-overlay" id="modalHomeItem" onclick="closeModal(event)">
+  <div class="modal">
+    <div class="modal-header">
+      <div class="modal-title" id="homeItemModalTitle">Tambah Item</div>
+      <button class="modal-close" onclick="closeModal('modalHomeItem')">✕</button>
+    </div>
+    <div class="modal-body">
+      <input type="hidden" id="home-item-id">
+      <input type="hidden" id="home-item-type">
+      <div id="home-item-form-layanan" class="home-item-form" style="display:none;">
+        <div class="form-grid-2">
+          <div class="form-field"><label>Icon (Emoji)</label><input type="text" id="hi-s-icon" placeholder="Contoh: 🚦"></div>
+          <div class="form-field"><label>Judul</label><input type="text" id="hi-s-title" placeholder="Nama layanan"></div>
+          <div class="form-field form-field-full"><label>Deskripsi</label><textarea id="hi-s-desc" placeholder="Penjelasan singkat layanan..."></textarea></div>
+        </div>
+      </div>
+      <div id="home-item-form-faq" class="home-item-form" style="display:none;">
+        <div class="form-field"><label>Pertanyaan</label><input type="text" id="hi-f-q" placeholder="Masukkan pertanyaan..."></div>
+        <div class="form-field" style="margin-top:1rem;"><label>Jawaban</label><textarea id="hi-f-a" style="min-height:120px;" placeholder="Masukkan jawaban detail..."></textarea></div>
+      </div>
+      <div id="home-item-form-alur" class="home-item-form" style="display:none;">
+        <div class="form-grid-2">
+          <div class="form-field"><label>Nomor Urut</label><input type="text" id="hi-a-num" placeholder="Contoh: 1"></div>
+          <div class="form-field"><label>Judul Stepper</label><input type="text" id="hi-a-title" placeholder="Nama tahapan"></div>
+          <div class="form-field form-field-full"><label>Deskripsi Singkat</label><textarea id="hi-a-desc" placeholder="Penjelasan alur pelayanan..."></textarea></div>
+        </div>
+      </div>
+      <div id="home-item-form-bidang" class="home-item-form" style="display:none;">
+        <div class="form-grid-2">
+          <div class="form-field"><label>Icon (Emoji)</label><input type="text" id="hi-b-icon" placeholder="Contoh: 🏢"></div>
+          <div class="form-field"><label>Nama Bidang/Unit</label><input type="text" id="hi-b-title" placeholder="Masukkan nama bidang"></div>
+          <div class="form-field form-field-full"><label>Deskripsi</label><textarea id="hi-b-desc" placeholder="Penjelasan tugas pokok/fungsi..."></textarea></div>
+        </div>
+      </div>
+      <div class="modal-actions">
+        <button class="modal-btn mb-done" onclick="saveHomeItem()">Simpan</button>
+        <button class="modal-btn mb-reject" onclick="closeModal('modalHomeItem')">Batal</button>
+      </div>
+    </div>
+  </div>
+</div>

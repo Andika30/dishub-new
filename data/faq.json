@@ -1,0 +1,27 @@
+[
+  {
+    "id": "F001",
+    "q": "Bagaimana cara mengajukan pengaduan?",
+    "a": "Anda dapat mengisi formulir pengaduan online di menu \"Pengaduan\" atau menghubungi WhatsApp resmi kami."
+  },
+  {
+    "id": "F002",
+    "q": "Berapa lama proses respons pengaduan?",
+    "a": "Kami berkomitmen untuk memberikan respons awal dalam waktu maksimal 3 hari kerja."
+  },
+  {
+    "id": "F003",
+    "q": "Apakah pengajuan izin dipungut biaya?",
+    "a": "Biaya perizinan disesuaikan dengan Peraturan Daerah yang berlaku. Detail tarif dapat dilihat di menu Layanan."
+  },
+  {
+    "id": "F004",
+    "q": "Di mana lokasi kantor Dinas Perhubungan?",
+    "a": "Kantor kami berlokasi di Jl. Raya Sudirman No. 123. Jam pelayanan Senin-Jumat 08:00 - 16:00."
+  },
+  {
+    "id": "F005",
+    "q": "Bagaimana cara mengecek status perizinan?",
+    "a": "Status perizinan akan diinformasikan melalui email atau nomor telepon yang Anda daftarkan."
+  }
+]

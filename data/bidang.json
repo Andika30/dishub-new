@@ -1,0 +1,20 @@
+[
+  {
+    "id": "B001",
+    "icon": "🚦",
+    "title": "MRLL",
+    "desc": "Manajemen Rekayasa Lalin."
+  },
+  {
+    "id": "B002",
+    "icon": "🚌",
+    "title": "Angkutan",
+    "desc": "Bidang Angkutan Umum."
+  },
+  {
+    "id": "B003",
+    "icon": "👷",
+    "title": "Prasarana",
+    "desc": "Fasilitas Jalan."
+  }
+]

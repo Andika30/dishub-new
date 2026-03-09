@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Dinas Perhubungan — Bidang Lalu Lintas Jalan</title>
+<title id="publicTabTitle">Dinas Perhubungan — Bidang Lalu Lintas Jalan</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=DM+Sans:wght@300;400;500;600&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
 <style>
@@ -619,10 +619,10 @@
 <!-- NAVIGATION -->
 <nav id="navbar">
   <div class="nav-logo">
-    <div class="nav-logo-icon">🚦</div>
+    <div class="nav-logo-icon" id="navLogoIcon">🚦</div>
     <div class="nav-logo-text">
-      <strong>DISHUB</strong>
-      <span>Bidang Lalu Lintas Jalan</span>
+      <strong id="navLogoTitle">DISHUB</strong>
+      <span id="navLogoSubtitle">Bidang Lalu Lintas Jalan</span>
     </div>
   </div>
   <ul class="nav-links">
@@ -661,13 +661,13 @@
   <div class="hero-particles" id="particles"></div>
   <div class="hero-content">
     <div class="hero-left">
-      <div class="hero-badge">Dinas Perhubungan — Bidang Lalu Lintas Jalan</div>
-      <h1 class="hero-title">
+      <div class="hero-badge" id="heroBadge">Dinas Perhubungan — Bidang Lalu Lintas Jalan</div>
+      <h1 class="hero-title" id="heroTitle">
         Informasi & Akses
         <span class="accent">Pelayanan Lalu Lintas</span>
         Mudah, Cepat & Transparan
       </h1>
-      <p class="hero-tagline">
+      <p class="hero-tagline" id="heroTagline">
         Portal resmi layanan bidang lalu lintas jalan. Kami hadir untuk memberikan akses informasi, perizinan, dan pelayanan publik yang efisien, akuntabel, dan berorientasi pada kepuasan masyarakat.
       </p>
       <div class="hero-actions">
@@ -676,16 +676,16 @@
       </div>
       <div class="hero-stats">
         <div class="stat">
-          <div class="stat-num">24/7</div>
-          <div class="stat-label">Informasi Online</div>
+          <div class="stat-num" id="heroStat1Val">24/7</div>
+          <div class="stat-label" id="heroStat1Lab">Informasi Online</div>
         </div>
         <div class="stat">
-          <div class="stat-num">12+</div>
-          <div class="stat-label">Jenis Layanan</div>
+          <div class="stat-num" id="heroStat2Val">12+</div>
+          <div class="stat-label" id="heroStat2Lab">Jenis Layanan</div>
         </div>
         <div class="stat">
-          <div class="stat-num">3 Hari</div>
-          <div class="stat-label">Respons Pengaduan</div>
+          <div class="stat-num" id="heroStat3Val">3 Hari</div>
+          <div class="stat-label" id="heroStat3Lab">Respons Pengaduan</div>
         </div>
       </div>
     </div>
@@ -708,9 +708,9 @@
         </div>
         <div class="info-card card-tertiary">
           <div style="font-size:0.72rem;color:var(--gray);margin-bottom:0.4rem;">JAM PELAYANAN</div>
-          <div style="font-size:1rem;font-weight:700;color:var(--teal);">08:00 – 16:00</div>
+          <div style="font-size:1rem;font-weight:700;color:var(--teal);" id="heroJamSenin">08:00 – 16:00</div>
           <div style="font-size:0.7rem;color:var(--gray);margin-top:0.2rem;">Senin – Jumat</div>
-          <div style="font-size:0.7rem;color:var(--gray);">08:00 – 12:00 Sabtu</div>
+          <div style="font-size:0.7rem;color:var(--gray);"><span id="heroJamSabtu">08:00 – 12:00</span> Sabtu</div>
         </div>
         <div class="info-card card-secondary">
           <div class="card-header">
@@ -719,7 +719,9 @@
               <div class="card-title-text">Kantor Kami</div>
             </div>
           </div>
-          <div style="font-size:0.73rem;color:var(--gray);line-height:1.6;">Jl. Raya Sudirman No. 123<br>Kota, Provinsi<br>📞 (021) 555-0100</div>
+          <div style="font-size:0.73rem;color:var(--gray);line-height:1.6;" id="heroKontak">
+            Jl. Raya Sudirman No. 123<br>Kota, Provinsi<br>📞 (021) 555-0100
+          </div>
         </div>
       </div>
     </div>
@@ -733,21 +735,21 @@
       <span class="info-icon">📍</span>
       <div class="info-text">
         <strong>Alamat Kantor</strong>
-        <span>Jl. Raya Sudirman No. 123, Kota</span>
+        <span id="stripAlamat">Jl. Raya Sudirman No. 123, Kota</span>
       </div>
     </div>
     <div class="info-item">
       <span class="info-icon">🕐</span>
       <div class="info-text">
         <strong>Jam Pelayanan</strong>
-        <span>Senin–Jumat 08:00–16:00 | Sabtu 08:00–12:00</span>
+        <span id="stripJam">Senin–Jumat 08:00–16:00 | Sabtu 08:00–12:00</span>
       </div>
     </div>
     <div class="info-item">
       <span class="info-icon">📞</span>
       <div class="info-text">
         <strong>Telepon</strong>
-        <span>(021) 555-0100 / 555-0101</span>
+        <span id="stripTelp">(021) 555-0100 / 555-0101</span>
       </div>
     </div>
     <div class="info-item">
@@ -775,13 +777,13 @@
       <div class="visi-misi-grid fade-in">
         <div class="vm-card">
           <div class="vm-label">VISI</div>
-          <p class="vm-text">"Terwujudnya sistem lalu lintas jalan yang aman, tertib, lancar, dan berwawasan lingkungan guna mendukung pembangunan daerah yang berkelanjutan."</p>
+          <p class="vm-text" id="publicVisi">"Terwujudnya sistem lalu lintas jalan yang aman, tertib, lancar, dan berwawasan lingkungan guna mendukung pembangunan daerah yang berkelanjutan."</p>
         </div>
         <div class="vm-card">
           <div class="vm-label">MISI</div>
-          <ul class="misi-list">
+          <ul class="misi-list" id="publicMisi">
             <li>Meningkatkan keselamatan dan ketertiban lalu lintas jalan</li>
-            <li>Mewujudkan pelayanan perizinan yang transparan dan akuntabel</li>
+            <li>Mewujudkan pelayanan perizinan yang transparan and akuntabel</li>
             <li>Mengembangkan infrastruktur manajemen lalu lintas berbasis teknologi</li>
             <li>Meningkatkan kualitas SDM di bidang lalu lintas jalan</li>
             <li>Mendorong partisipasi masyarakat dalam pengelolaan lalu lintas</li>
@@ -790,7 +792,7 @@
         <!-- BIDANG -->
         <div style="margin-top:1rem;">
           <div class="section-label" style="margin-bottom:1rem;">Profil Bidang</div>
-          <div class="bidang-grid" style="grid-template-columns: repeat(2, 1fr);">
+          <div class="bidang-grid" style="grid-template-columns: repeat(2, 1fr);" id="publicBidangGrid">
             <div class="bidang-card">
               <div class="bidang-icon">🚦</div>
               <div class="bidang-name">Manajemen Rekayasa Lalu Lintas</div>
@@ -856,7 +858,7 @@
       <h2 class="section-title">Jenis <span class="gold">Layanan Kami</span></h2>
       <p class="section-desc">Berbagai layanan administrasi lalu lintas jalan tersedia untuk memenuhi kebutuhan masyarakat dan pelaku usaha transportasi.</p>
     </div>
-    <div class="layanan-grid">
+    <div class="layanan-grid" id="publicServicesGrid">
       <div class="layanan-card fade-in">
         <div class="layanan-icon">🚗</div>
         <div class="layanan-title">Izin Usaha Angkutan Orang</div>
@@ -905,7 +907,7 @@
       <h2 class="section-title">Alur <span class="gold">Pelayanan</span></h2>
       <p class="section-desc" style="margin:0 auto;">Proses pelayanan yang jelas dan terstandar untuk memastikan setiap permohonan ditangani dengan tepat dan efisien.</p>
     </div>
-    <div class="alur-steps fade-in">
+    <div class="alur-steps fade-in" id="publicAlurSteps">
       <div class="alur-step">
         <div class="step-icon">📝</div>
         <div class="step-num">1</div>
@@ -1140,23 +1142,23 @@
             <div class="kontak-icon ki-gold">📞</div>
             <div class="kontak-detail">
               <strong>Telepon Hotline</strong>
-              <a href="tel:0215550100">(021) 555-0100</a><br>
-              <span>Senin–Jumat 08:00–16:00</span>
+              <a href="tel:0215550100" id="contactHotlineLink">(021) 555-0100</a><br>
+              <span id="contactHotlineJam">Senin–Jumat 08:00–16:00</span>
             </div>
           </div>
           <div class="kontak-card">
             <div class="kontak-icon ki-green">💬</div>
             <div class="kontak-detail">
               <strong>WhatsApp Resmi</strong>
-              <a href="https://wa.me/6281234567890" target="_blank">0812-3456-7890</a><br>
-              <span>Senin–Sabtu 08:00–20:00</span>
+              <a href="https://wa.me/6281234567890" target="_blank" id="contactWaLink">0812-3456-7890</a><br>
+              <span id="contactWaJam">Senin–Sabtu 08:00–20:00</span>
             </div>
           </div>
           <div class="kontak-card">
             <div class="kontak-icon ki-teal">📧</div>
             <div class="kontak-detail">
               <strong>Email Resmi</strong>
-              <a href="mailto:pengaduan@dishub.go.id">pengaduan@dishub.go.id</a><br>
+              <a href="mailto:pengaduan@dishub.go.id" id="contactEmailLink">pengaduan@dishub.go.id</a><br>
               <span>Respons dalam 1×24 jam kerja</span>
             </div>
           </div>
@@ -1164,7 +1166,7 @@
             <div class="kontak-icon ki-red">🏛️</div>
             <div class="kontak-detail">
               <strong>Kunjungan Langsung</strong>
-              <span>Jl. Raya Sudirman No. 123</span><br>
+              <span id="contactAlamat">Jl. Raya Sudirman No. 123</span><br>
               <span>Loket Pengaduan Lt. 1</span>
             </div>
           </div>
@@ -1193,7 +1195,7 @@
       <h2 class="section-title">FAQ — <span class="gold">Tanya Jawab</span></h2>
       <p class="section-desc" style="margin:0 auto;">Kumpulan pertanyaan yang sering diajukan terkait layanan Bidang Lalu Lintas Jalan.</p>
     </div>
-    <div class="faq-grid" style="margin-top:2.5rem;">
+    <div class="faq-grid" style="margin-top:2.5rem;" id="publicFaqGrid">
       <div class="faq-item fade-in" onclick="toggleFaq(this)">
         <div class="faq-question">Berapa lama proses penerbitan izin angkutan? <span class="faq-toggle">+</span></div>
         <div class="faq-answer">Proses penerbitan izin angkutan umum membutuhkan waktu 5–7 hari kerja sejak berkas dinyatakan lengkap dan benar. Untuk izin perpanjangan, prosesnya lebih singkat yaitu 3–5 hari kerja.</div>
@@ -1227,10 +1229,10 @@
   <div class="footer-grid">
     <div class="footer-brand">
       <div style="display:flex;align-items:center;gap:12px;margin-bottom:0.5rem;">
-        <div style="width:38px;height:38px;background:linear-gradient(135deg,var(--gold),var(--gold-light));border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:1.2rem;color:var(--navy);font-weight:700;">🚦</div>
-        <strong>Dinas Perhubungan</strong>
+        <div style="width:38px;height:38px;background:linear-gradient(135deg,var(--gold),var(--gold-light));border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:1.2rem;color:var(--navy);font-weight:700;" id="footerLogoIcon">🚦</div>
+        <strong id="footerBrandTitle">Dinas Perhubungan</strong>
       </div>
-      <p>Bidang Lalu Lintas Jalan<br>Jl. Raya Sudirman No. 123, Kota<br>Telp: (021) 555-0100<br>Email: info@dishub.go.id</p>
+      <p id="footerBrandDesc">Bidang Lalu Lintas Jalan<br>Jl. Raya Sudirman No. 123, Kota<br>Telp: (021) 555-0100<br>Email: info@dishub.go.id</p>
     </div>
     <div class="footer-col">
       <h4>LAYANAN</h4>
@@ -1256,14 +1258,14 @@
       <h4>PENGADUAN</h4>
       <ul>
         <li><a href="#pengaduan">Form Online</a></li>
-        <li><a href="tel:0215550100">Hotline (021) 555-0100</a></li>
-        <li><a href="https://wa.me/6281234567890">WhatsApp Resmi</a></li>
-        <li><a href="mailto:pengaduan@dishub.go.id">Email Pengaduan</a></li>
+        <li><a href="tel:0215550100" id="footerHotline">Hotline (021) 555-0100</a></li>
+        <li><a href="https://wa.me/6281234567890" id="footerWaLink">WhatsApp Resmi</a></li>
+        <li><a href="mailto:pengaduan@dishub.go.id" id="footerEmailLink">Email Pengaduan</a></li>
       </ul>
     </div>
   </div>
   <div class="footer-bottom">
-    <div class="footer-copy">© 2026 Dinas Perhubungan — Bidang Lalu Lintas Jalan. Hak Cipta Dilindungi.</div>
+    <div class="footer-copy" id="footerCopyright">© 2026 Dinas Perhubungan — Bidang Lalu Lintas Jalan. Hak Cipta Dilindungi.</div>
     <div class="social-links">
       <a class="social-link" href="#" title="Instagram">📷</a>
       <a class="social-link" href="#" title="Facebook">📘</a>
@@ -1281,7 +1283,7 @@
   </div>
   <div class="float-btn-wrap">
     <span class="float-label">Chat WhatsApp</span>
-    <a href="https://wa.me/6281234567890" class="float-btn float-wa" target="_blank">💬</a>
+    <a href="https://wa.me/6281234567890" class="float-btn float-wa" target="_blank" id="floatWaBtn">💬</a>
   </div>
 </div>
 
@@ -1388,12 +1390,18 @@
       </div>`).join('');
   }
 
+  async function apiGet(url) {
+    const r = await fetch(url);
+    return r.json();
+  }
+
   async function loadPublicData() {
     try {
-      const [rekayasa, pengumuman, files] = await Promise.all([
+      const [rekayasa, pengumuman, files, settings] = await Promise.all([
         fetch('/api/rekayasa').then(r => r.json()),
         fetch('/api/pengumuman').then(r => r.json()),
         fetch('/api/files').then(r => r.json()),
+        fetch('/api/settings').then(r => r.json()),
       ]);
 
       // Render rekayasa
@@ -1440,6 +1448,150 @@
       Object.entries(KATEGORI_MAP).forEach(([kat, id]) => {
         renderDownloadList(id, files.filter(f => f.kategori === kat));
       });
+
+      // Fetch dynamic content
+      const [services, faq, alur, bidang] = await Promise.all([
+        apiGet('/api/services'), apiGet('/api/faq'),
+        apiGet('/api/alur'), apiGet('/api/bidang')
+      ]);
+
+      // Apply Settings
+      const s = settings;
+      const appName = s.nama_aplikasi || 'DISHUB Portal';
+      const appIcon = s.app_icon || '🚦';
+      const instansi = s.nama_instansi || 'DISHUB';
+      const bidangSetting = s.bidang || 'Bidang Lalu Lintas Jalan';
+
+      if (document.getElementById('publicTabTitle')) document.getElementById('publicTabTitle').textContent = `${instansi} — ${bidangSetting}`;
+      
+      const navIconEl = document.getElementById('navLogoIcon');
+      if (navIconEl) {
+        if (s.logo_url) {
+          navIconEl.innerHTML = `<img src="${s.logo_url}" style="height:32px; width:32px; object-fit:contain;">`;
+        } else {
+          navIconEl.textContent = appIcon;
+        }
+      }
+
+      if (document.getElementById('navLogoTitle'))    document.getElementById('navLogoTitle').textContent = appName;
+      if (document.getElementById('navLogoSubtitle')) document.getElementById('navLogoSubtitle').textContent = bidangSetting;
+      if (document.getElementById('heroBadge'))       document.getElementById('heroBadge').textContent = `${instansi} — ${bidangSetting}`;
+      
+      const footerIconEl = document.getElementById('footerLogoIcon');
+      if (footerIconEl) {
+        if (s.logo_url) {
+          footerIconEl.innerHTML = `<img src="${s.logo_url}" style="height:30px; width:30px; object-fit:contain;">`;
+          footerIconEl.style.background = 'white';
+        } else {
+          footerIconEl.textContent = appIcon;
+          footerIconEl.style.background = 'linear-gradient(135deg,var(--gold),var(--gold-light))';
+        }
+      }
+
+      if (document.getElementById('footerBrandTitle')) document.getElementById('footerBrandTitle').textContent = instansi;
+      if (document.getElementById('footerCopyright'))  document.getElementById('footerCopyright').textContent = s.footer_text || `© ${new Date().getFullYear()} ${instansi}. Hak Cipta Dilindungi.`;
+
+      // Hero & Info Strip Dynamic Content
+      if (document.getElementById('heroJamSenin')) document.getElementById('heroJamSenin').textContent = s.jam_senin_jumat || '08:00 – 16:00';
+      if (document.getElementById('heroJamSabtu')) document.getElementById('heroJamSabtu').textContent = s.jam_sabtu || '08:00 – 12:00';
+      if (document.getElementById('heroKontak')) {
+        document.getElementById('heroKontak').innerHTML = `${s.alamat || 'Jl. Raya Sudirman No. 123'}<br>📞 ${s.telepon || '(021) 555-0100'}`;
+      }
+      if (document.getElementById('stripAlamat')) document.getElementById('stripAlamat').textContent = s.alamat || 'Jl. Raya Sudirman No. 123';
+      if (document.getElementById('stripJam'))    document.getElementById('stripJam').textContent    = `Senin–Jumat ${s.jam_senin_jumat || '08:00–16:00'} | Sabtu ${s.jam_sabtu || '08:00–12:00'}`;
+      if (document.getElementById('stripTelp'))   document.getElementById('stripTelp').textContent   = s.telepon || '(021) 555-0100';
+
+      // Footer & Links Dynamic Content
+      if (document.getElementById('footerBrandDesc')) {
+        document.getElementById('footerBrandDesc').innerHTML = `${bidangSetting}<br>${s.alamat || ''}<br>Telp: ${s.telepon || ''}<br>Email: ${s.email || ''}`;
+      }
+      if (document.getElementById('footerHotline')) {
+        document.getElementById('footerHotline').href = `tel:${(s.telepon || '').replace(/\D/g,'')}`;
+        document.getElementById('footerHotline').textContent = `Hotline ${s.telepon || ''}`;
+      }
+      if (document.getElementById('footerWaLink')) {
+        document.getElementById('footerWaLink').href = `https://wa.me/${(s.wa || '').replace(/\D/g,'')}`;
+      }
+      if (document.getElementById('floatWaBtn')) {
+        document.getElementById('floatWaBtn').href = `https://wa.me/${(s.wa || '').replace(/\D/g,'')}`;
+      }
+      if (document.getElementById('footerEmailLink')) {
+        document.getElementById('footerEmailLink').href = `mailto:${s.email || ''}`;
+      }
+
+      // Contact Info Dynamic Content
+      if (document.getElementById('contactHotlineLink')) {
+        document.getElementById('contactHotlineLink').href = `tel:${(s.telepon || '').replace(/\D/g,'')}`;
+        document.getElementById('contactHotlineLink').textContent = s.telepon || '(021) 555-0100';
+      }
+      if (document.getElementById('contactHotlineJam')) document.getElementById('contactHotlineJam').textContent = `Senin–Jumat ${s.jam_senin_jumat || '08:00–16:00'}`;
+      if (document.getElementById('contactWaLink')) {
+        document.getElementById('contactWaLink').href = `https://wa.me/${(s.wa || '').replace(/\D/g,'')}`;
+        document.getElementById('contactWaLink').textContent = s.wa || '0812-3456-7890';
+      }
+      if (document.getElementById('contactEmailLink')) {
+        document.getElementById('contactEmailLink').href = `mailto:${s.email || ''}`;
+        document.getElementById('contactEmailLink').textContent = s.email || 'pengaduan@dishub.go.id';
+      }
+      if (document.getElementById('contactAlamat')) document.getElementById('contactAlamat').textContent = s.alamat || 'Jl. Raya Sudirman No. 123';
+
+      // Render Dynamic Lists
+      if (document.getElementById('heroTitle') && s.hero_title)     document.getElementById('heroTitle').innerHTML = s.hero_title;
+      if (document.getElementById('heroTagline') && s.hero_tagline) document.getElementById('heroTagline').textContent = s.hero_tagline;
+      if (document.getElementById('heroStat1Val')) document.getElementById('heroStat1Val').textContent = s.hero_stat1_val || '24/7';
+      if (document.getElementById('heroStat1Lab')) document.getElementById('heroStat1Lab').textContent = s.hero_stat1_lab || 'Informasi Online';
+      if (document.getElementById('heroStat2Val')) document.getElementById('heroStat2Val').textContent = s.hero_stat2_val || '12+';
+      if (document.getElementById('heroStat2Lab')) document.getElementById('heroStat2Lab').textContent = s.hero_stat2_lab || 'Jenis Layanan';
+      if (document.getElementById('heroStat3Val')) document.getElementById('heroStat3Val').textContent = s.hero_stat3_val || '3 Hari';
+      if (document.getElementById('heroStat3Lab')) document.getElementById('heroStat3Lab').textContent = s.hero_stat3_lab || 'Respons Pengaduan';
+      
+      if (document.getElementById('publicVisi') && s.visi) document.getElementById('publicVisi').textContent = s.visi;
+      if (document.getElementById('publicMisi') && s.misi) {
+        const misiList = s.misi.split('\n').filter(m => m.trim().length > 0);
+        document.getElementById('publicMisi').innerHTML = misiList.map(m => `<li>${m}</li>`).join('');
+      }
+
+      // List Rendering
+      const sGrid = document.getElementById('publicServicesGrid');
+      if (sGrid && services.length) {
+        sGrid.innerHTML = services.map(srv => `
+          <div class="layanan-card fade-in">
+            <div class="layanan-icon">${srv.icon || '🚦'}</div>
+            <div class="layanan-title">${srv.title}</div>
+            <div class="layanan-desc">${srv.desc}</div>
+            <div class="layanan-link" onclick="scrollToSection('persyaratan')">Lihat Persyaratan →</div>
+          </div>`).join('');
+      }
+
+      const aSteps = document.getElementById('publicAlurSteps');
+      if (aSteps && alur.length) {
+        aSteps.innerHTML = alur.map(st => `
+          <div class="alur-step">
+            <div class="step-icon">📝</div>
+            <div class="step-num">${st.num}</div>
+            <div class="step-title">${st.title}</div>
+            <div class="step-desc">${st.desc}</div>
+          </div>`).join('');
+      }
+
+      const fGrid = document.getElementById('publicFaqGrid');
+      if (fGrid && faq.length) {
+        fGrid.innerHTML = faq.map(f => `
+          <div class="faq-item fade-in" onclick="toggleFaq(this)">
+            <div class="faq-question">${f.q} <span class="faq-toggle">+</span></div>
+            <div class="faq-answer">${f.a}</div>
+          </div>`).join('');
+      }
+
+      const bGrid = document.getElementById('publicBidangGrid');
+      if (bGrid && bidang.length) {
+        bGrid.innerHTML = bidang.map(b => `
+          <div class="bidang-card">
+            <div class="bidang-icon">${b.icon || '🚦'}</div>
+            <div class="bidang-name">${b.title}</div>
+            <div class="bidang-desc">${b.desc}</div>
+          </div>`).join('');
+      }
 
     } catch(e) {
       // Server tidak berjalan — tampilkan pesan minimal

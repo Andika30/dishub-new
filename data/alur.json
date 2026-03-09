@@ -1,0 +1,32 @@
+[
+  {
+    "id": "A001",
+    "num": "1",
+    "title": "Pendaftaran",
+    "desc": "Isi formulir online atau datang ke loket."
+  },
+  {
+    "id": "A002",
+    "num": "2",
+    "title": "Verifikasi",
+    "desc": "Petugas memeriksa kelengkapan dokumen."
+  },
+  {
+    "id": "A003",
+    "num": "3",
+    "title": "Pembayaran",
+    "desc": "Bayar retribusi jika diperlukan."
+  },
+  {
+    "id": "A004",
+    "num": "4",
+    "title": "Proses Teknis",
+    "desc": "Survei lapangan atau kajian teknis."
+  },
+  {
+    "id": "A005",
+    "num": "5",
+    "title": "Selesai",
+    "desc": "Dokumen izin diterbitkan."
+  }
+]
