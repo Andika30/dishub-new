@@ -1,0 +1,23 @@
+[
+  {
+    "id": "S001",
+    "nama": "Andika",
+    "jabatan": "Kepala Bidang Lalu Lintas",
+    "foto": "",
+    "bio": "Berpengalaman 10 tahun di manajemen lalu lintas."
+  },
+  {
+    "id": "S002",
+    "nama": "Budi Santoso",
+    "jabatan": "Kasi Rekayasa Lalin",
+    "foto": "",
+    "bio": "Ahli dalam perancangan simpang dan rambu."
+  },
+  {
+    "id": "S003",
+    "nama": "Citra Lestari",
+    "jabatan": "Kasi Angkutan",
+    "foto": "",
+    "bio": "Mengelola perizinan dan manajemen angkutan umum."
+  }
+]

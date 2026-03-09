@@ -140,6 +140,12 @@ const DEF_BIDANG = [
   { id: 'B003', icon: '👷', title: 'Prasarana', desc: 'Fasilitas Jalan.' },
 ];
 
+const DEF_STAFF = [
+  { id: 'S001', nama: 'Andi Saputra', jabatan: 'Kepala Bidang Lalu Lintas', foto: '', bio: 'Berpengalaman 10 tahun di manajemen lalu lintas.' },
+  { id: 'S002', nama: 'Budi Santoso', jabatan: 'Kasi Rekayasa Lalin', foto: '', bio: 'Ahli dalam perancangan simpang dan rambu.' },
+  { id: 'S003', nama: 'Citra Lestari', jabatan: 'Kasi Angkutan', foto: '', bio: 'Mengelola perizinan dan manajemen angkutan umum.' },
+];
+
 const DEF_SETTINGS = {
   nama_aplikasi:'DISHUB Portal', app_icon:'🚦',
   logo_url:'', footer_text:'© 2026 Dinas Perhubungan. Hak Cipta Dilindungi.',
@@ -165,6 +171,7 @@ const DEFAULTS = {
   pengaduan: DEF_PENGADUAN, rekayasa: DEF_REKAYASA, pengumuman: DEF_PENGUMUMAN,
   files: DEF_FILES, users: DEF_USERS,
   services: DEF_SERVICES, faq: DEF_FAQ, alur: DEF_ALUR, bidang: DEF_BIDANG,
+  staff: DEF_STAFF,
 };
 
 // ─── Seed lokal ───────────────────────────────────────────────────────────────
@@ -177,7 +184,7 @@ if (!USE_REDIS) {
 }
 
 // ─── API: Array Resources ─────────────────────────────────────────────────────
-const ARR_RESOURCES = ['pengaduan', 'rekayasa', 'pengumuman', 'files', 'users', 'services', 'faq', 'alur', 'bidang'];
+const ARR_RESOURCES = ['pengaduan', 'rekayasa', 'pengumuman', 'files', 'users', 'services', 'faq', 'alur', 'bidang', 'staff'];
 
 ARR_RESOURCES.forEach(res => {
   const def = DEFAULTS[res];

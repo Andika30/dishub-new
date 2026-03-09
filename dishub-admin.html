@@ -284,6 +284,27 @@
   /* PENGGUNA */
   .user-avatar-big { width:40px; height:40px; border-radius:50%; background:linear-gradient(135deg,var(--gold),var(--gold-l)); display:flex; align-items:center; justify-content:center; font-size:1.1rem; font-weight:700; color:#0d1117; flex-shrink:0; }
 
+  /* STAFF MANAGEMENT */
+  .staff-grid { display:grid; grid-template-columns:repeat(auto-fill, minmax(260px, 1fr)); gap:1.5rem; }
+  .staff-card { 
+    background:var(--bg); border:1px solid var(--border); border-radius:20px; 
+    padding:1.6rem; text-align:center; position:relative; transition:all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    display:flex; flex-direction:column; align-items:center;
+  }
+  .staff-card:hover { border-color:var(--gold); transform:translateY(-8px); box-shadow:0 15px 35px rgba(0,0,0,0.4); }
+  .staff-photo-wrap { 
+    width:100px; height:100px; border-radius:50%; margin-bottom:1.2rem;
+    background:rgba(255,255,255,0.03); border:3px solid var(--border);
+    display:flex; align-items:center; justify-content:center; overflow:hidden;
+    font-size:2.8rem; color:var(--muted); transition:all 0.3s;
+  }
+  .staff-card:hover .staff-photo-wrap { border-color:var(--gold); transform:scale(1.05); }
+  .staff-photo-wrap img { width:100%; height:100%; object-fit:cover; }
+  .staff-name { font-size:1.05rem; font-weight:700; color:var(--text); margin-bottom:0.4rem; }
+  .staff-pos { font-size:0.7rem; font-weight:700; color:var(--gold); text-transform:uppercase; letter-spacing:0.1em; margin-bottom:1rem; padding:0.25rem 0.8rem; background:rgba(212,160,23,0.1); border-radius:100px; }
+  .staff-bio { font-size:0.8rem; color:var(--muted); line-height:1.6; margin-bottom:1.5rem; display:-webkit-box; -webkit-line-clamp:3; -webkit-box-orient:vertical; overflow:hidden; flex:1; }
+  .staff-actions { width:100%; display:flex; gap:0.6rem; justify-content:center; border-top:1px solid var(--border); padding-top:1.2rem; }
+
   @media(max-width:900px) {
     .sidebar { transform:translateX(-100%); }
     .sidebar.open { transform:translateX(0); }
@@ -332,6 +353,7 @@
     <div class="nav-item" onclick="setNav(this,'rekayasa')">🚧 Rekayasa Lalin</div>
     <div class="nav-item" onclick="setNav(this,'pengumuman')">📢 Pengumuman</div>
     <div class="nav-item" onclick="setNav(this,'konten-beranda')">🏠 Konten Beranda</div>
+    <div class="nav-item" onclick="setNav(this,'staff')">👮 Manajemen Staff</div>
     <div class="nav-item" onclick="setNav(this,'downloads')">📥 Download Manager</div>
   </div>
   <div class="nav-section">
@@ -718,6 +740,19 @@
         </div>
       </div>
     </div>
+
+    <!-- ===== PANEL: STAFF ===== -->
+    <div id="panel-staff" class="panel">
+      <div class="crud-section">
+        <div class="table-header" style="border-bottom:none; padding:0 0 1.5rem 0;">
+          <div class="table-title" style="font-size:1.1rem;">Manajemen Staff & Pejabat</div>
+          <button class="btn-save" onclick="openStaffModal()">+ Tambah Staff</button>
+        </div>
+        <div id="staff-list">
+          <div class="list-empty">Memuat data staff...</div>
+        </div>
+      </div>
+    </div>
     <div id="panel-pengguna" class="panel">
       <div class="crud-section">
         <div class="crud-section-title">➕ Tambah Pengguna Admin</div>
@@ -937,6 +972,7 @@ async function apiDelete(url) {
 
 // =================== DATA (diisi oleh init) ===================
 let allData        = [];
+let staffData      = [];
 let rekayasaData   = [];
 let pengumumanData = [];
 let filesData      = [];
@@ -1141,6 +1177,7 @@ const NAV_TITLES = {
   pengumuman:'Pengumuman', downloads:'Download Manager', pengguna:'Pengguna',
   laporan:'Laporan & Ekspor', pengaturan:'Pengaturan',
   'konten-beranda':'Manajemen Konten Beranda',
+  staff: 'Manajemen Staff',
 };
 
 function setNav(el, panelId, statusFilter) {
@@ -1165,6 +1202,7 @@ function setNav(el, panelId, statusFilter) {
   if (panelId === 'laporan')    renderLaporanPanel();
   if (panelId === 'pengaturan') renderPengaturanPanel();
   if (panelId === 'konten-beranda') renderKontenBerandaPanel();
+  if (panelId === 'staff') renderStaffPanel();
 }
 
 // =================== CHARTS ===================
@@ -1676,6 +1714,103 @@ async function deleteHomeItem(type, id) {
   showToast('🗑️ Item berhasil dihapus', 'var(--orange)');
 }
 
+// =================== STAFF MANAGEMENT ===================
+function renderStaffPanel() {
+  const el = document.getElementById('staff-list');
+  if (!el) return;
+  if (!staffData || staffData.length === 0) {
+    el.innerHTML = '<div class="list-empty">Belum ada data staff. Klik "+ Tambah Staff" untuk memulai.</div>';
+    return;
+  }
+  el.innerHTML = `<div class="staff-grid">${staffData.map(s => `
+    <div class="staff-card">
+      <div class="staff-photo-wrap">
+        ${s.foto ? `<img src="${s.foto}">` : '👤'}
+      </div>
+      <div class="staff-name">${s.nama}</div>
+      <div class="staff-pos">${s.jabatan}</div>
+      <div class="staff-bio">${s.bio || 'Tidak ada deskripsi.'}</div>
+      <div class="staff-actions">
+        <button class="btn-edit" onclick="openStaffModal('${s.id}')">✏️ Edit</button>
+        <button class="btn-danger" onclick="deleteStaff('${s.id}')">🗑️ Hapus</button>
+      </div>
+    </div>`).join('')}</div>`;
+}
+
+function openStaffModal(id = null) {
+  const modal = document.getElementById('modalStaff');
+  const title = document.getElementById('staffModalTitle');
+  const item = id ? staffData.find(s => s.id === id) : null;
+
+  title.textContent = id ? 'Edit Staff' : 'Tambah Staff';
+  document.getElementById('staff-id').value = id || '';
+  document.getElementById('staff-nama').value = item ? item.nama : '';
+  document.getElementById('staff-jabatan').value = item ? item.jabatan : '';
+  document.getElementById('staff-bio').value = item ? item.bio || '' : '';
+  document.getElementById('staff-foto-base64').value = item ? item.foto || '' : '';
+  
+  const preview = document.getElementById('staff-photo-preview');
+  if (item && item.foto) {
+    preview.innerHTML = `<img src="${item.foto}" style="width:100%;height:100%;object-fit:cover;">`;
+  } else {
+    preview.innerHTML = '👤';
+  }
+
+  modal.classList.add('open');
+}
+
+function handleStaffPhoto(e) {
+  const file = e.target.files[0];
+  if (!file) return;
+  if (file.size > 500 * 1024) {
+    alert('File terlalu besar! Maksimal 500KB.');
+    return;
+  }
+  const reader = new FileReader();
+  reader.onload = function(event) {
+    const base64 = event.target.result;
+    document.getElementById('staff-foto-base64').value = base64;
+    document.getElementById('staff-photo-preview').innerHTML = `<img src="${base64}" style="width:100%;height:100%;object-fit:cover;">`;
+  };
+  reader.readAsDataURL(file);
+}
+
+async function saveStaff() {
+  const id = document.getElementById('staff-id').value;
+  const body = {
+    id: id || ('S' + Date.now()),
+    nama: document.getElementById('staff-nama').value,
+    jabatan: document.getElementById('staff-jabatan').value,
+    bio: document.getElementById('staff-bio').value,
+    foto: document.getElementById('staff-foto-base64').value
+  };
+
+  if (!body.nama || !body.jabatan) {
+    showToast('❌ Nama dan Jabatan harus diisi', 'var(--red)');
+    return;
+  }
+
+  if (id) {
+    await apiPut('/api/staff/' + id, body);
+  } else {
+    await apiPost('/api/staff', body);
+  }
+
+  staffData = await apiGet('/api/staff');
+  renderStaffPanel();
+  closeModalDirect('modalStaff');
+  showToast('✅ Data staff berhasil disimpan', 'var(--green)');
+}
+
+async function deleteStaff(id) {
+  if (!confirm('Yakin ingin menghapus staff ini?')) return;
+  await apiDelete('/api/staff/' + id);
+  staffData = await apiGet('/api/staff');
+  renderStaffPanel();
+  showToast('🗑️ Staff berhasil dihapus', 'var(--orange)');
+}
+
+
 // =================== LAPORAN PANEL ===================
 function renderLaporanPanel() {
   const total   = allData.length;
@@ -1853,7 +1988,7 @@ async function init() {
   }
   const overlay = document.getElementById('loadingOverlay');
   try {
-    [allData, rekayasaData, pengumumanData, filesData, usersData, settingsData, servicesData, faqData, alurData, bidangData] = await Promise.all([
+    [allData, rekayasaData, pengumumanData, filesData, usersData, settingsData, servicesData, faqData, alurData, bidangData, staffData] = await Promise.all([
       apiGet('/api/pengaduan'),
       apiGet('/api/rekayasa'),
       apiGet('/api/pengumuman'),
@@ -1864,6 +1999,7 @@ async function init() {
       apiGet('/api/faq'),
       apiGet('/api/alur'),
       apiGet('/api/bidang'),
+      apiGet('/api/staff'),
     ]);
     filtered = [...allData];
     updateStats(); renderTable(); renderTable2(); renderBarChart(); renderDonutChart();
@@ -1923,6 +2059,51 @@ init();
       <div class="modal-actions">
         <button class="modal-btn mb-done" onclick="saveHomeItem()">Simpan</button>
         <button class="modal-btn mb-reject" onclick="closeModal('modalHomeItem')">Batal</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- MODAL: STAFF MANAGEMENT -->
+<div class="modal-overlay" id="modalStaff" onclick="closeModal(event)">
+  <div class="modal">
+    <div class="modal-header">
+      <div class="modal-title" id="staffModalTitle">Tambah Staff</div>
+      <button class="modal-close" onclick="closeModal('modalStaff')">✕</button>
+    </div>
+    <div class="modal-body">
+      <input type="hidden" id="staff-id">
+      <div class="form-grid-2">
+        <div class="form-field">
+          <label>Nama Lengkap</label>
+          <input type="text" id="staff-nama" placeholder="Nama dan gelar">
+        </div>
+        <div class="form-field">
+          <label>Jabatan</label>
+          <input type="text" id="staff-jabatan" placeholder="Kepala Bidang / Kasi / Staff">
+        </div>
+        <div class="form-field form-field-full">
+          <label>Bio Singkat</label>
+          <textarea id="staff-bio" placeholder="Deskripsi singkat mengenai staff..."></textarea>
+        </div>
+        <div class="form-field form-field-full">
+          <label>Foto Staff</label>
+          <div style="display:flex;gap:1rem;align-items:center;">
+            <div id="staff-photo-preview" style="width:70px;height:70px;background:var(--bg);border:1px solid var(--border);border-radius:50%;display:flex;align-items:center;justify-content:center;overflow:hidden;font-size:2rem;color:var(--muted);">
+              👤
+            </div>
+            <div>
+              <input type="file" id="staff-photo-input" accept="image/*" style="display:none;" onchange="handleStaffPhoto(event)">
+              <button class="export-btn" onclick="document.getElementById('staff-photo-input').click()" style="margin:0;">Upload Foto</button>
+              <div style="font-size:0.65rem;color:var(--muted);margin-top:0.4rem;">Format JPG/PNG, Maks 500KB</div>
+            </div>
+          </div>
+          <input type="hidden" id="staff-foto-base64">
+        </div>
+      </div>
+      <div class="modal-actions">
+        <button class="modal-btn mb-done" onclick="saveStaff()">Simpan Staff</button>
+        <button class="modal-btn mb-reject" onclick="closeModal('modalStaff')">Batal</button>
       </div>
     </div>
   </div>

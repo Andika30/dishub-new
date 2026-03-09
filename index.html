@@ -816,34 +816,17 @@
           </div>
         </div>
       </div>
-      <div class="fade-in">
-        <div class="pimpinan-card">
-          <div class="pimpinan-avatar">👤</div>
-          <div class="pimpinan-name">Ir. Budi Santoso, M.T.</div>
-          <div class="pimpinan-title">KEPALA BIDANG LALU LINTAS JALAN</div>
-          <p class="pimpinan-bio">Berpengalaman lebih dari 20 tahun di bidang transportasi dan lalu lintas jalan. Memiliki komitmen kuat dalam mewujudkan sistem transportasi yang aman, tertib, dan efisien bagi seluruh masyarakat.</p>
+      <div class="fade-in" id="publicStaffSection">
+        <div id="publicStaffPimpinan">
+          <div class="pimpinan-card">
+            <div class="pimpinan-avatar">👤</div>
+            <div class="pimpinan-name">Memuat Data...</div>
+            <div class="pimpinan-title">KEPALA BIDANG</div>
+            <p class="pimpinan-bio">...</p>
+          </div>
         </div>
-        <div class="staff-grid" style="grid-template-columns: repeat(2, 1fr); margin-top: 1.2rem;">
-          <div class="staff-card">
-            <div class="staff-avatar">👤</div>
-            <div class="staff-name">Dra. Siti Rahayu</div>
-            <div class="staff-pos">Kasie Manajemen Rekayasa</div>
-          </div>
-          <div class="staff-card">
-            <div class="staff-avatar">👤</div>
-            <div class="staff-name">Ahmad Fauzi, S.T.</div>
-            <div class="staff-pos">Kasie Perizinan & Angkutan</div>
-          </div>
-          <div class="staff-card">
-            <div class="staff-avatar">👤</div>
-            <div class="staff-name">Rina Lestari, S.Kom.</div>
-            <div class="staff-pos">Kasie Data & Informatika</div>
-          </div>
-          <div class="staff-card">
-            <div class="staff-avatar">👤</div>
-            <div class="staff-name">Hendra Wijaya</div>
-            <div class="staff-pos">Kasie Keselamatan Jalan</div>
-          </div>
+        <div class="staff-grid" id="publicStaffGrid" style="grid-template-columns: repeat(2, 1fr); margin-top: 1.2rem;">
+          <!-- Staff items rendered here -->
         </div>
       </div>
     </div>
@@ -1450,9 +1433,10 @@
       });
 
       // Fetch dynamic content
-      const [services, faq, alur, bidang] = await Promise.all([
+      const [services, faq, alur, bidang, staff] = await Promise.all([
         apiGet('/api/services'), apiGet('/api/faq'),
-        apiGet('/api/alur'), apiGet('/api/bidang')
+        apiGet('/api/alur'), apiGet('/api/bidang'),
+        apiGet('/api/staff')
       ]);
 
       // Apply Settings
@@ -1591,6 +1575,33 @@
             <div class="bidang-name">${b.title}</div>
             <div class="bidang-desc">${b.desc}</div>
           </div>`).join('');
+      }
+
+      // Render Staff
+      if (staff && staff.length) {
+        const pimpinan = staff[0];
+        const staffList = staff.slice(1);
+
+        const pimpinanWrap = document.getElementById('publicStaffPimpinan');
+        if (pimpinanWrap) {
+          pimpinanWrap.innerHTML = `
+            <div class="pimpinan-card">
+              <div class="pimpinan-avatar">${pimpinan.foto ? `<img src="${pimpinan.foto}" style="width:100%;height:100%;object-fit:cover;border-radius:50%;">` : '👤'}</div>
+              <div class="pimpinan-name">${pimpinan.nama}</div>
+              <div class="pimpinan-title" style="text-transform:uppercase;">${pimpinan.jabatan}</div>
+              <p class="pimpinan-bio">${pimpinan.bio || ''}</p>
+            </div>`;
+        }
+
+        const staffGridEl = document.getElementById('publicStaffGrid');
+        if (staffGridEl) {
+          staffGridEl.innerHTML = staffList.map(s => `
+            <div class="staff-card">
+              <div class="staff-avatar">${s.foto ? `<img src="${s.foto}" style="width:100%;height:100%;object-fit:cover;border-radius:50%;">` : '👤'}</div>
+              <div class="staff-name">${s.nama}</div>
+              <div class="staff-pos">${s.jabatan}</div>
+            </div>`).join('');
+        }
       }
 
     } catch(e) {
